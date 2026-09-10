@@ -7,13 +7,7 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'reports';
 
-$reports = [
-    ['resourcesReport', 'Resource report', 'bi-box-seam-fill', 'Inventory levels, categories, stock movement, and low-stock items.', 'Daily', '428 stock units', 'Updated 8:42 AM'],
-    ['distributionReport', 'Distribution report', 'bi-truck', 'Released supplies, recipients, locations, and accountable personnel.', 'Daily', '247 households served', 'Updated 8:31 AM'],
-    ['evacuationReport', 'Evacuation center report', 'bi-buildings-fill', 'Capacity, current occupancy, operating status, and center contacts.', 'Live', '3 centers open', 'Updated 8:20 AM'],
-    ['residentsReport', 'Resident report', 'bi-people-fill', 'Household totals, priority groups, locations, and verification status.', 'Monthly', '1,284 residents', 'Updated Sep 8'],
-    ['volunteersReport', 'Volunteer report', 'bi-person-hearts', 'Skills, team assignments, availability, and deployment readiness.', 'Weekly', '86 volunteers', 'Updated Sep 7'],
-];
+$reports = [];
 
 include '../../includes/header.php';
 ?>

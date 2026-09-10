@@ -7,15 +7,7 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'announcements';
 
-$announcements = [
-    ['id' => 'ANN-0261', 'title' => 'Orange Rainfall Warning: Stay Alert', 'content' => 'Moderate to heavy rainfall may affect Dagupan this afternoon. Monitor official updates and prepare essential medicines and documents.', 'category' => 'Emergency', 'audience' => 'All residents', 'status' => 'Published', 'date' => 'Sep 10, 2026', 'time' => '9:15 AM', 'author' => 'Maria L. Santos'],
-    ['id' => 'ANN-0260', 'title' => 'Relief Distribution Schedule — Zones 1 to 3', 'content' => 'Registered households may claim food packs at the Barangay Hall beginning 1:00 PM. Bring a household reference or valid identification.', 'category' => 'Distribution', 'audience' => 'Zones 1–3', 'status' => 'Published', 'date' => 'Sep 10, 2026', 'time' => '8:00 AM', 'author' => 'Ana L. Mendoza'],
-    ['id' => 'ANN-0259', 'title' => 'Temporary Water Supply Interruption', 'content' => 'Potable-water service may be interrupted in Sitio Korea while emergency line repairs are completed. Water stations are being prepared.', 'category' => 'Advisory', 'audience' => 'Sitio Korea', 'status' => 'Draft', 'date' => 'Sep 10, 2026', 'time' => '7:35 AM', 'author' => 'Joel P. Garcia'],
-    ['id' => 'ANN-0258', 'title' => 'One Bonuan Center Capacity Update', 'content' => 'The One Bonuan Multi-Purpose Center remains open and has available family spaces. Please register at the reception desk on arrival.', 'category' => 'Evacuation', 'audience' => 'Evacuees', 'status' => 'Published', 'date' => 'Sep 9, 2026', 'time' => '6:20 PM', 'author' => 'Maria L. Santos'],
-    ['id' => 'ANN-0257', 'title' => 'Volunteer Operations Briefing', 'content' => 'Accredited volunteers assigned to packing and distribution are requested to report to the operations desk for the 6:30 AM briefing.', 'category' => 'Operations', 'audience' => 'Volunteers', 'status' => 'Draft', 'date' => 'Sep 9, 2026', 'time' => '4:42 PM', 'author' => 'Roberto S. Cruz'],
-    ['id' => 'ANN-0256', 'title' => 'Floodwater Monitoring Continues', 'content' => 'Monitoring teams are checking low-lying roads and drainage channels. Avoid entering moving floodwater and report blocked access routes.', 'category' => 'Emergency', 'audience' => 'All residents', 'status' => 'Published', 'date' => 'Sep 9, 2026', 'time' => '2:10 PM', 'author' => 'Maria L. Santos'],
-    ['id' => 'ANN-0255', 'title' => 'Palatong Road Access Advisory', 'content' => 'Earlier road-clearing work has been completed. This advisory was archived after normal access resumed.', 'category' => 'Advisory', 'audience' => 'Motorists', 'status' => 'Archived', 'date' => 'Sep 8, 2026', 'time' => '5:30 PM', 'author' => 'Joel P. Garcia'],
-];
+$announcements = [];
 
 $statusClasses = ['Published' => 'status-success', 'Draft' => 'status-warning', 'Archived' => 'status-neutral'];
 $categoryIcons = ['Emergency' => 'bi-exclamation-triangle-fill', 'Distribution' => 'bi-box-seam-fill', 'Advisory' => 'bi-info-circle-fill', 'Evacuation' => 'bi-buildings-fill', 'Operations' => 'bi-people-fill'];

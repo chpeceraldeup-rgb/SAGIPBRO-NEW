@@ -7,14 +7,7 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'users';
 
-$users = [
-    ['USR-001', 'Maria Santos', 'MS', 'maria.santos', 'Administrator', 'maria.santos@binloc.gov.ph', 'Today, 8:12 AM', 'Active'],
-    ['USR-014', 'Rogelio Cruz', 'RC', 'rogelio.cruz', 'Barangay Official', 'r.cruz@binloc.gov.ph', 'Today, 7:48 AM', 'Active'],
-    ['USR-027', 'Denise Fernandez', 'DF', 'denise.fernandez', 'Volunteer', 'denise.f@gmail.com', 'Yesterday, 5:31 PM', 'Active'],
-    ['USR-033', 'Paolo Garcia', 'PG', 'paolo.garcia', 'Volunteer', 'paolo.g@gmail.com', 'Sep 8, 2026', 'Active'],
-    ['USR-042', 'Liza Manalo', 'LM', 'liza.manalo', 'Resident', 'liza.m@gmail.com', 'Sep 5, 2026', 'Active'],
-    ['USR-048', 'Carlo Mendoza', 'CM', 'carlo.mendoza', 'Resident', 'carlo.m@gmail.com', 'Aug 22, 2026', 'Inactive'],
-];
+$users = [];
 
 include '../../includes/header.php';
 ?>

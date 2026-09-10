@@ -7,16 +7,7 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'activity';
 
-$logs = [
-    ['LOG-9842', 'Maria Santos', 'MS', 'Updated', 'Resources', 'Adjusted Family Food Pack stock from 138 to 120 units', '10.10.4.18', 'Sep 10, 2026', '8:42 AM', 'success', 'bi-box-seam'],
-    ['LOG-9841', 'Rogelio Cruz', 'RC', 'Created', 'Distribution', 'Recorded distribution batch DST-2026-0910-03', '10.10.4.22', 'Sep 10, 2026', '8:31 AM', 'success', 'bi-truck'],
-    ['LOG-9840', 'Denise Fernandez', 'DF', 'Signed in', 'Authentication', 'Successful staff sign-in', '192.168.1.87', 'Sep 10, 2026', '8:19 AM', 'info', 'bi-box-arrow-in-right'],
-    ['LOG-9839', 'Maria Santos', 'MS', 'Published', 'Announcements', 'Published Flood Watch Level 1 advisory', '10.10.4.18', 'Sep 10, 2026', '8:05 AM', 'success', 'bi-megaphone'],
-    ['LOG-9838', 'System', 'SY', 'Warning', 'Resources', 'Drinking Water reached low-stock threshold', 'System task', 'Sep 10, 2026', '7:55 AM', 'warning', 'bi-exclamation-triangle'],
-    ['LOG-9837', 'Paolo Garcia', 'PG', 'Updated', 'Evacuation', 'Updated Binloc Elementary School occupancy to 86', '192.168.1.94', 'Sep 9, 2026', '6:47 PM', 'success', 'bi-buildings'],
-    ['LOG-9836', 'Unknown user', 'UN', 'Blocked', 'Authentication', 'Sign-in blocked after repeated failed attempts', '49.145.22.118', 'Sep 9, 2026', '6:16 PM', 'danger', 'bi-shield-x'],
-    ['LOG-9835', 'Rogelio Cruz', 'RC', 'Exported', 'Reports', 'Exported daily distribution report', '10.10.4.22', 'Sep 9, 2026', '5:48 PM', 'info', 'bi-download'],
-];
+$logs = [];
 
 include '../../includes/header.php';
 ?>

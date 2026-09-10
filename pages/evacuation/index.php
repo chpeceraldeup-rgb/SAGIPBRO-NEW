@@ -7,14 +7,7 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'evacuation';
 
-$centers = [
-    ['id' => 'EC-001', 'name' => 'One Bonuan Multi-Purpose Center', 'location' => 'Bonuan Boquig, Dagupan City', 'capacity' => 1200, 'occupants' => 782, 'status' => 'Open', 'contact' => 'Elena M. Ramos', 'phone' => '0917 555 0138', 'updated' => '10 min ago'],
-    ['id' => 'EC-002', 'name' => 'Federico N. Ceralde Integrated School', 'location' => 'China St., Bonuan Binloc', 'capacity' => 420, 'occupants' => 388, 'status' => 'Near capacity', 'contact' => 'Roberto D. Navarro', 'phone' => '0918 555 0264', 'updated' => '18 min ago'],
-    ['id' => 'EC-003', 'name' => 'Bonuan Binloc Barangay Hall', 'location' => 'Bonuan Binloc, Dagupan City', 'capacity' => 250, 'occupants' => 164, 'status' => 'Open', 'contact' => 'Lorna P. Garcia', 'phone' => '0920 555 0311', 'updated' => '31 min ago'],
-    ['id' => 'EC-004', 'name' => 'Binloc Health Center Annex', 'location' => 'Sitio Korea, Bonuan Binloc', 'capacity' => 120, 'occupants' => 120, 'status' => 'Full', 'contact' => 'Nurse May A. Rivera', 'phone' => '0919 555 0475', 'updated' => '6 min ago'],
-    ['id' => 'EC-005', 'name' => 'Tondaligan Elementary School', 'location' => 'Bonuan Gueset, Dagupan City', 'capacity' => 500, 'occupants' => 0, 'status' => 'Closed', 'contact' => 'Daniel C. Flores', 'phone' => '0921 555 0592', 'updated' => 'Sep 9, 4:20 PM'],
-    ['id' => 'EC-006', 'name' => 'Palmas Verdes Community Hall', 'location' => 'Bonuan Binloc, Dagupan City', 'capacity' => 180, 'occupants' => 54, 'status' => 'Open', 'contact' => 'Arlene S. Bautista', 'phone' => '0916 555 0618', 'updated' => '1 hr ago'],
-];
+$centers = [];
 
 $statusClasses = [
     'Open' => 'status-success',

@@ -7,16 +7,7 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'distributions';
 
-$distributions = [
-    ['id' => 'DST-2026-0910-018', 'resource' => 'Family Food Pack', 'category' => 'Food packs', 'recipient' => 'Reyes Family', 'recipient_id' => 'HH-0421', 'quantity' => '4 packs', 'location' => 'Bonuan Binloc Barangay Hall', 'date' => 'Sep 10, 2026', 'time' => '10:35 AM', 'by' => 'Ana L. Mendoza', 'notes' => 'Four-person household; priority lane.', 'status' => 'Completed'],
-    ['id' => 'DST-2026-0910-017', 'resource' => 'Drinking Water', 'category' => 'Water & hydration', 'recipient' => 'Santos Family', 'recipient_id' => 'HH-0187', 'quantity' => '3 cases', 'location' => 'One Bonuan Multi-Purpose Center', 'date' => 'Sep 10, 2026', 'time' => '10:12 AM', 'by' => 'Joel P. Garcia', 'notes' => 'Issued to evacuation cubicle B-14.', 'status' => 'Completed'],
-    ['id' => 'DST-2026-0910-016', 'resource' => 'Baby Care Kit', 'category' => 'Special needs', 'recipient' => 'Mariel D. Cruz', 'recipient_id' => 'RES-0832', 'quantity' => '1 kit', 'location' => 'Binloc Health Center Annex', 'date' => 'Sep 10, 2026', 'time' => '9:48 AM', 'by' => 'Nurse May A. Rivera', 'notes' => 'Infant care request verified by health desk.', 'status' => 'Pending review'],
-    ['id' => 'DST-2026-0910-015', 'resource' => 'Hygiene Kit', 'category' => 'Hygiene', 'recipient' => 'Villanueva Family', 'recipient_id' => 'HH-0294', 'quantity' => '2 kits', 'location' => 'Federico N. Ceralde Integrated School', 'date' => 'Sep 10, 2026', 'time' => '9:25 AM', 'by' => 'Lea C. Flores', 'notes' => 'Senior citizen and PWD household.', 'status' => 'Completed'],
-    ['id' => 'DST-2026-0909-044', 'resource' => 'Thermal Blanket', 'category' => 'Shelter', 'recipient' => 'Ramon P. Bautista', 'recipient_id' => 'RES-0513', 'quantity' => '2 pieces', 'location' => 'Palmas Verdes Community Hall', 'date' => 'Sep 9, 2026', 'time' => '5:16 PM', 'by' => 'Joel P. Garcia', 'notes' => 'Replacement issued after water damage.', 'status' => 'Completed'],
-    ['id' => 'DST-2026-0909-043', 'resource' => 'First Aid Kit', 'category' => 'Medical', 'recipient' => 'Evacuation Medical Desk', 'recipient_id' => 'UNIT-MED-02', 'quantity' => '3 kits', 'location' => 'One Bonuan Multi-Purpose Center', 'date' => 'Sep 9, 2026', 'time' => '4:42 PM', 'by' => 'Ana L. Mendoza', 'notes' => 'Transferred for on-site first-aid operations.', 'status' => 'Completed'],
-    ['id' => 'DST-2026-0909-042', 'resource' => 'Sleeping Mat', 'category' => 'Shelter', 'recipient' => 'Navarro Family', 'recipient_id' => 'HH-0376', 'quantity' => '5 pieces', 'location' => 'Federico N. Ceralde Integrated School', 'date' => 'Sep 9, 2026', 'time' => '3:58 PM', 'by' => 'Lea C. Flores', 'notes' => 'Quantity requires supervisor validation.', 'status' => 'Pending review'],
-    ['id' => 'DST-2026-0909-041', 'resource' => 'Rice, 25 kg', 'category' => 'Food packs', 'recipient' => 'Community Kitchen Team', 'recipient_id' => 'UNIT-CK-01', 'quantity' => '6 sacks', 'location' => 'Bonuan Binloc Barangay Hall', 'date' => 'Sep 9, 2026', 'time' => '2:20 PM', 'by' => 'Roberto S. Cruz', 'notes' => 'For 300 prepared evening meals.', 'status' => 'Completed'],
-];
+$distributions = [];
 
 $statusClasses = ['Completed' => 'status-success', 'Pending review' => 'status-warning'];
 

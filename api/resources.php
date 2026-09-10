@@ -5,11 +5,12 @@ require_once __DIR__ . '/bootstrap.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	requireApiLogin();
 	$stmt = $conn->query(
-		"SELECT id, name, category, unit, stock, low_stock_threshold, status,
-				CASE WHEN stock = 0 THEN 'Out of stock'
-					 WHEN stock <= low_stock_threshold THEN 'Low stock'
+		"SELECT id, resource_name AS name, category, unit, quantity AS stock,
+				minimum_stock AS low_stock_threshold, location, status, created_at, updated_at,
+				CASE WHEN quantity = 0 THEN 'Out of stock'
+					 WHEN quantity <= minimum_stock THEN 'Low stock'
 					 ELSE 'In stock' END AS stock_status
-		 FROM resources WHERE status = 'Available' ORDER BY name"
+		 FROM resources WHERE status <> 'Inactive' ORDER BY resource_name"
 	);
 	jsonResponse(['data' => $stmt->fetchAll()]);
 }
@@ -26,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if ($stock === false || $threshold === false) {
 		jsonResponse(['error' => 'Stock values must be non-negative integers.'], 422);
 	}
-	$stmt = $conn->prepare('INSERT INTO resources (name, category, unit, stock, low_stock_threshold) VALUES (?, ?, ?, ?, ?)');
-	$stmt->execute([$name, $category, $unit, $stock, $threshold]);
+	$stmt = $conn->prepare('INSERT INTO resources (resource_name, category, unit, quantity, minimum_stock, location, status) VALUES (?, ?, ?, ?, ?, ?, \'Available\')');
+	$stmt->execute([$name, $category, $unit, $stock, $threshold, $data['location'] ?? null]);
 	$id = (int) $conn->lastInsertId();
 	logActivity($conn, 'create', 'resource', $id, ['name' => $name]);
 	jsonResponse(['id' => $id, 'message' => 'Resource created.'], 201);
@@ -43,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 	if ($stock === false || $threshold === false) {
 		jsonResponse(['error' => 'Stock values must be non-negative integers.'], 422);
 	}
-	$stmt = $conn->prepare('UPDATE resources SET name = ?, category = ?, unit = ?, stock = ?, low_stock_threshold = ? WHERE id = ?');
-	$stmt->execute([$name, $category, $unit, $stock, $threshold, $id]);
+	$stmt = $conn->prepare('UPDATE resources SET resource_name = ?, category = ?, unit = ?, quantity = ?, minimum_stock = ?, location = ? WHERE id = ? AND status <> \'Inactive\'');
+	$stmt->execute([$name, $category, $unit, $stock, $threshold, $data['location'] ?? null, $id]);
 	if (!$stmt->rowCount()) {
 		jsonResponse(['error' => 'Resource not found or unchanged.'], 404);
 	}
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-	$stmt = $conn->prepare("UPDATE resources SET status = 'Inactive' WHERE id = ?");
+	$stmt = $conn->prepare("UPDATE resources SET status = 'Inactive' WHERE id = ? AND status <> 'Inactive'");
 	$stmt->execute([$id]);
 	if (!$stmt->rowCount()) {
 		jsonResponse(['error' => 'Resource not found.'], 404);
