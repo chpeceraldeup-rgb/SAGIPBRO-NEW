@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official']);
 
 $pageTitle = 'Announcements';
 $pageDescription = 'Create, publish, and maintain trusted community advisories through SAGIPBRO.';

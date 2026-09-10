@@ -9,6 +9,7 @@ $activeAdmin = 'profile';
 $profileName = trim((string) ($_SESSION['full_name'] ?? 'Maria Santos')) ?: 'Maria Santos';
 $profileRole = ucfirst((string) ($_SESSION['role'] ?? 'Administrator'));
 $profileInitials = implode('', array_map(static fn ($part) => strtoupper(substr($part, 0, 1)), array_slice(array_filter(explode(' ', $profileName)), 0, 2)));
+$profileDashboard = ($_SESSION['role'] ?? '') === 'volunteer' ? 'volunteer.php' : 'admin.php';
 
 include '../../includes/header.php';
 ?>
@@ -19,7 +20,7 @@ include '../../includes/header.php';
         <main class="admin-content" id="main-content">
             <header class="page-header">
                 <div>
-                    <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../dashboard/admin.php">Dashboard</a></li><li class="breadcrumb-item active" aria-current="page">My profile</li></ol></nav>
+                    <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../dashboard/<?= htmlspecialchars($profileDashboard, ENT_QUOTES, 'UTF-8') ?>">Dashboard</a></li><li class="breadcrumb-item active" aria-current="page">My profile</li></ol></nav>
                     <h1>My profile</h1>
                     <p>Keep your account details current and review your recent security activity.</p>
                 </div>
@@ -115,6 +116,6 @@ include '../../includes/header.php';
                 </div>
             </div>
         </main>
-        <?php include '../../includes/footer.php'; ?>
     </div>
 </div>
+<?php include '../../includes/footer.php'; ?>

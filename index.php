@@ -3,6 +3,11 @@ $pageTitle = 'SAGIPBRO';
 $pageDescription = 'Official disaster relief resource information for Bonuan Binloc, Dagupan City—relief supplies, evacuation centers, distributions, and emergency updates.';
 $activePage = 'home';
 $basePath = '';
+require_once __DIR__ . '/includes/public_service_helpers.php';
+$snapshot = publicLoad(static fn(PDO $db): array => [
+    'resources' => publicResources($db)['rows'],
+    'centers' => publicCenters($db)['rows'],
+]);
 require __DIR__ . '/includes/header.php';
 require __DIR__ . '/includes/navbar.php';
 ?>
@@ -16,7 +21,7 @@ require __DIR__ . '/includes/navbar.php';
                 <p class="hero-copy">One trusted place for residents and barangay responders to find relief supply availability, evacuation center information, and verified emergency updates when every minute matters.</p>
                 <div class="hero-actions">
                     <a class="btn btn-white" href="resources.php"><i class="bi bi-box-seam" aria-hidden="true"></i> View resources</a>
-                    <a class="btn btn-ghost-light" href="services.php#evacuation-centers"><i class="bi bi-buildings" aria-hidden="true"></i> View evacuation centers</a>
+                    <a class="btn btn-ghost-light" href="evacuation-centers.php"><i class="bi bi-buildings" aria-hidden="true"></i> View evacuation centers</a>
                 </div>
             </div>
         </div>
@@ -37,7 +42,7 @@ require __DIR__ . '/includes/navbar.php';
                     <strong>Community preparedness reminder</strong>
                     <span>Keep your family go-bag ready, monitor official weather bulletins, and know your nearest evacuation route.</span>
                 </div>
-                <a class="emergency-link" href="services.php#announcements">Read guidance <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                <a class="emergency-link" href="announcements.php">Read guidance <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
             </div>
         </div>
     </section>
@@ -56,13 +61,13 @@ require __DIR__ . '/includes/navbar.php';
                     <p>Check the current availability of food, water, hygiene supplies, medicine, and other essential goods.</p>
                     <span class="quick-link">Browse supplies <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
                 </a>
-                <a class="quick-card" href="services.php#evacuation-centers">
+                <a class="quick-card" href="evacuation-centers.php">
                     <span class="quick-icon"><i class="bi bi-houses" aria-hidden="true"></i></span>
                     <h3>Evacuation centers</h3>
                     <p>Review center locations, operating status, capacity, and available accommodation before traveling.</p>
                     <span class="quick-link">Find a safe center <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
                 </a>
-                <a class="quick-card" href="services.php#relief-distribution">
+                <a class="quick-card" href="distributions.php">
                     <span class="quick-icon"><i class="bi bi-truck" aria-hidden="true"></i></span>
                     <h3>Relief distribution</h3>
                     <p>Understand how organized relief is scheduled, recorded, and delivered fairly to affected households.</p>
@@ -74,59 +79,38 @@ require __DIR__ . '/includes/navbar.php';
 
     <section class="section-space section-soft" aria-labelledby="snapshot-title">
         <div class="container">
-            <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
-                <div class="section-heading mb-0">
-                    <span class="section-kicker">Situation snapshot</span>
-                    <h2 id="snapshot-title">Relief readiness at a glance</h2>
-                    <p>A quick view of essential supplies and evacuation capacity.</p>
-                </div>
-                <span class="status-badge status-success">Updated today, 8:30 AM</span>
+            <div class="section-heading">
+                <span class="section-kicker">Situation snapshot</span>
+                <h2 id="snapshot-title">Relief readiness at a glance</h2>
+                <p>A quick view of recorded supplies and evacuation capacity.</p>
             </div>
-            <div class="snapshot-wrap">
-                <article class="surface-card">
-                    <div class="surface-card-header">
-                        <div>
-                            <h3>Essential relief inventory</h3>
-                            <p>Most-requested resources available for response operations</p>
+            <?php publicDataNotice($snapshot); ?>
+            <?php if (!$snapshot['error']): ?>
+                <div class="snapshot-wrap">
+                    <article class="surface-card">
+                        <div class="surface-card-header"><div><h3>Relief inventory</h3><p>Latest quantities recorded in the barangay database</p></div><a class="btn btn-sm btn-brand-soft" href="resources.php">View all</a></div>
+                        <div class="surface-card-body pt-0">
+                            <?php if (!$snapshot['data']['resources']): ?>
+                                <p>No resources have been recorded yet. Contact the barangay for availability.</p>
+                            <?php else: ?>
+                                <ul class="resource-list">
+                                    <?php foreach (array_slice($snapshot['data']['resources'], 0, 4) as $resource): ?>
+                                        <li><span class="resource-mini-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span><span><strong><?= publicEscape($resource['name']) ?></strong><small><?= publicEscape($resource['category']) ?> · <?= publicEscape($resource['unit']) ?></small></span><span class="resource-quantity"><strong><?= publicQuantity($resource['stock']) ?></strong><?php publicStatus($resource['availability']); ?></span></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
                         </div>
-                        <a class="btn btn-sm btn-brand-soft" href="resources.php">View all</a>
-                    </div>
-                    <div class="surface-card-body pt-0">
-                        <ul class="resource-list">
-                            <li>
-                                <span class="resource-mini-icon"><i class="bi bi-basket2" aria-hidden="true"></i></span>
-                                <span><strong>Family food packs</strong><small>Food supplies · per pack</small></span>
-                                <span class="resource-quantity"><strong>486</strong><small class="status-badge status-success">In stock</small></span>
-                            </li>
-                            <li>
-                                <span class="resource-mini-icon"><i class="bi bi-droplet" aria-hidden="true"></i></span>
-                                <span><strong>Drinking water</strong><small>Water · 6-liter container</small></span>
-                                <span class="resource-quantity"><strong>320</strong><small class="status-badge status-success">In stock</small></span>
-                            </li>
-                            <li>
-                                <span class="resource-mini-icon"><i class="bi bi-bag-heart" aria-hidden="true"></i></span>
-                                <span><strong>Hygiene kits</strong><small>Health &amp; sanitation · per kit</small></span>
-                                <span class="resource-quantity"><strong>74</strong><small class="status-badge status-warning">Low stock</small></span>
-                            </li>
-                            <li>
-                                <span class="resource-mini-icon"><i class="bi bi-moon-stars" aria-hidden="true"></i></span>
-                                <span><strong>Sleeping mats</strong><small>Shelter supplies · per piece</small></span>
-                                <span class="resource-quantity"><strong>118</strong><small class="status-badge status-success">In stock</small></span>
-                            </li>
-                        </ul>
-                    </div>
-                </article>
-                <article class="center-feature">
-                    <span class="feature-icon"><i class="bi bi-building-check" aria-hidden="true"></i></span>
-                    <span class="status-badge status-success mb-3">Open</span>
-                    <h2>Bonuan multipurpose evacuation facility</h2>
-                    <p>Serving the One Bonuan community during hazard events, with coordinated barangay assistance.</p>
-                    <div class="occupancy-line"><span>Current occupancy</span><strong>184 / 1,200</strong></div>
-                    <div class="progress" role="progressbar" aria-label="Evacuation center occupancy" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 15%"></div></div>
-                    <a class="btn btn-ghost-light w-100 mt-4" href="services.php#evacuation-centers"><i class="bi bi-geo-alt" aria-hidden="true"></i> Center information</a>
-                </article>
-            </div>
-            <p class="mt-3 mb-0 text-secondary" style="font-size:.72rem"><i class="bi bi-info-circle me-1" aria-hidden="true"></i> Demonstration inventory values are shown for the frontend design and will be replaced by connected database records.</p>
+                    </article>
+                    <article class="center-feature">
+                        <span class="feature-icon"><i class="bi bi-building-check" aria-hidden="true"></i></span>
+                        <h2>Evacuation center availability</h2>
+                        <?php $availableCenters = array_filter($snapshot['data']['centers'], static fn(array $center): bool => $center['availability'] === 'Available'); ?>
+                        <p><?= count($availableCenters) ?> available of <?= count($snapshot['data']['centers']) ?> recorded centers. Full and closed centers are excluded from available spaces.</p>
+                        <div class="occupancy-line"><span>Available spaces</span><strong><?= number_format(array_sum(array_column($availableCenters, 'available_spaces'))) ?></strong></div>
+                        <a class="btn btn-ghost-light w-100 mt-4" href="evacuation-centers.php"><i class="bi bi-geo-alt" aria-hidden="true"></i> View evacuation centers</a>
+                    </article>
+                </div>
+            <?php endif; ?>
         </div>
     </section>
 

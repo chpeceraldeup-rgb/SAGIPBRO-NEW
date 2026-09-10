@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official']);
 
 $pageTitle = 'Activity Logs';
 $pageDescription = 'Review auditable activity across the SAGIPBRO operations console.';
@@ -62,7 +63,7 @@ include '../../includes/header.php';
                             <tbody>
                                 <?php foreach ($logs as $log): ?>
                                     <?php $badgeClass = $log[9] === 'danger' ? 'status-danger' : ($log[9] === 'warning' ? 'status-warning' : ($log[9] === 'info' ? 'status-info' : 'status-success')); ?>
-                                    <tr data-action="<?= htmlspecialchars($log[3], ENT_QUOTES, 'UTF-8') ?>">
+                                    <tr data-row data-action="<?= htmlspecialchars($log[3], ENT_QUOTES, 'UTF-8') ?>">
                                         <td><div class="activity-cell"><span class="activity-icon <?= $log[9] === 'warning' ? 'warning' : ($log[9] === 'info' ? 'info' : '') ?>"><i class="bi <?= htmlspecialchars($log[10], ENT_QUOTES, 'UTF-8') ?>" aria-hidden="true"></i></span><span><span class="table-primary-text"><?= htmlspecialchars($log[3], ENT_QUOTES, 'UTF-8') ?></span><span class="table-secondary-text"><?= htmlspecialchars($log[0], ENT_QUOTES, 'UTF-8') ?></span></span></div></td>
                                         <td><span class="table-avatar" aria-hidden="true"><?= htmlspecialchars($log[2], ENT_QUOTES, 'UTF-8') ?></span><span class="table-primary-text d-inline"><?= htmlspecialchars($log[1], ENT_QUOTES, 'UTF-8') ?></span></td>
                                         <td><span class="status-badge <?= $badgeClass ?>"><?= htmlspecialchars($log[4], ENT_QUOTES, 'UTF-8') ?></span></td>
@@ -79,7 +80,6 @@ include '../../includes/header.php';
                 </div>
             </section>
         </main>
-        <?php include '../../includes/footer.php'; ?>
     </div>
 </div>
 
@@ -92,3 +92,4 @@ include '../../includes/header.php';
     </div>
     <div class="modal-footer"><button class="btn btn-brand" type="button" data-bs-dismiss="modal">Done</button></div>
 </div></div></div>
+<?php include '../../includes/footer.php'; ?>

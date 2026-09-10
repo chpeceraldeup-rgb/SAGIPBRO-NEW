@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Contact';
-$pageDescription = 'Find verified Dagupan City emergency coordination details and preview the SAGIPBRO contact form for Barangay Bonuan Binloc.';
+$pageDescription = 'Find Barangay Bonuan Binloc hall hotlines, email, and Dagupan City emergency coordination details, and preview the SAGIPBRO contact form.';
 $activePage = 'contact';
 $basePath = '';
 
@@ -18,7 +18,7 @@ include __DIR__ . '/includes/navbar.php';
             </nav>
             <span class="hero-chip"><span aria-hidden="true"></span> Contact and assistance</span>
             <h1 id="contact-page-title">Reach the right help, without guesswork.</h1>
-            <p>Find the barangay address and clearly labeled Dagupan City contact channels. For immediate threats to life or safety, call 911.</p>
+            <p>Find the barangay address, hall hotlines, email, and clearly labeled Dagupan City contact channels. For immediate threats to life or safety, call 911.</p>
         </div>
     </section>
 
@@ -36,6 +36,21 @@ include __DIR__ . '/includes/navbar.php';
                                 <div>
                                     <strong>Barangay address</strong>
                                     <span>Bonuan Binloc, Dagupan City, Pangasinan 2400</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="bi bi-telephone" aria-hidden="true"></i>
+                                <div>
+                                    <strong>Barangay hall hotlines</strong>
+                                    <a href="tel:+639631743346">0963 174 3346</a><br>
+                                    <a href="tel:+639632173031">0963 217 3031</a>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="bi bi-envelope" aria-hidden="true"></i>
+                                <div>
+                                    <strong>Barangay email</strong>
+                                    <a href="mailto:barangaybonuabbinloc@gmail.com">barangaybonuabbinloc@gmail.com</a>
                                 </div>
                             </li>
                             <li>
@@ -62,8 +77,9 @@ include __DIR__ . '/includes/navbar.php';
                         </ul>
                     </div>
                     <div class="contact-hours">
-                        <strong>Verification note</strong>
-                        <span>A direct barangay telephone number and email address have not been publicly verified. The telephone numbers and email above are Dagupan City channels.</span>
+                        <strong>Barangay and city contacts</strong>
+                        <span>Use the barangay hall hotlines and email for local inquiries. Dagupan City contact channels are listed separately for citywide concerns and disaster coordination.</span>
+                        <a class="d-inline-block mt-2 text-white small" href="https://www.dagupan.gov.ph/directories/" target="_blank" rel="noopener noreferrer">View the official city directory <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
                     </div>
                 </aside>
 
@@ -75,7 +91,7 @@ include __DIR__ . '/includes/navbar.php';
                         <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
                         <div>
                             <strong>UI preview</strong>
-                            <span>This form does not transmit or store messages. Use the verified contact channels for real assistance.</span>
+                            <span>This form does not transmit or store messages. Use the listed contact channels for real assistance.</span>
                         </div>
                     </div>
 

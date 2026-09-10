@@ -1,6 +1,10 @@
 (() => {
     'use strict';
 
+    document.querySelectorAll('[data-public-print]').forEach((button) => {
+        button.addEventListener('click', () => window.print());
+    });
+
     document.querySelectorAll('[data-current-year]').forEach((node) => {
         node.textContent = new Date().getFullYear();
     });
@@ -48,7 +52,7 @@
                     form.classList.remove('was-validated');
                     const modal = form.closest('.modal');
                     if (modal && window.bootstrap) window.bootstrap.Modal.getOrCreateInstance(modal).hide();
-                    showToast(form.dataset.successMessage || 'Your information has been saved.', 'Action complete');
+                    showToast(form.dataset.successMessage || form.dataset.demoMessage || form.dataset.toastMessage || 'Your information has been saved.', 'Action complete');
                 }, 450);
             }
         });

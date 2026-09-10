@@ -28,9 +28,8 @@ $sidebarGroups = [
 if ($sidebarRole === 'volunteer') {
     $sidebarGroups = [
         'Overview' => $sidebarGroups['Overview'],
-        'Operations' => $sidebarGroups['Operations'],
-        'Communication' => [
-            ['announcements', 'Announcements', 'bi-megaphone-fill', 'pages/announcements/index.php'],
+        'Operations' => [
+            ['distributions', 'Distributions', 'bi-truck', 'pages/distribution/index.php'],
         ],
     ];
 }

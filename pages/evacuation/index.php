@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official']);
 
 $pageTitle = 'Evacuation Centers';
 $pageDescription = 'Manage evacuation facilities, capacity, occupancy, and local contacts in SAGIPBRO.';

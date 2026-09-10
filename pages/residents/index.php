@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official']);
 
 $pageTitle = 'Residents';
 $pageDescription = 'Manage resident and household records for Barangay Binloc.';
@@ -112,7 +113,7 @@ include '../../includes/header.php';
                             </thead>
                             <tbody>
                                 <?php foreach ($residents as $resident): ?>
-                                    <tr data-status="<?= htmlspecialchars($resident[8], ENT_QUOTES, 'UTF-8') ?>">
+                                    <tr data-row data-status="<?= htmlspecialchars($resident[8], ENT_QUOTES, 'UTF-8') ?>">
                                         <td>
                                             <span class="table-avatar" aria-hidden="true"><?= htmlspecialchars($resident[2], ENT_QUOTES, 'UTF-8') ?></span>
                                             <span class="d-inline-block align-middle">
@@ -151,7 +152,6 @@ include '../../includes/header.php';
                 </div>
             </section>
         </main>
-        <?php include '../../includes/footer.php'; ?>
     </div>
 </div>
 
@@ -220,3 +220,4 @@ include '../../includes/header.php';
         </div>
     </div>
 </div>
+<?php include '../../includes/footer.php'; ?>

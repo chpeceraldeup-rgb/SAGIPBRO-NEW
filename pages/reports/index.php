@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official']);
 
 $pageTitle = 'Reports';
 $pageDescription = 'Generate operational reports for Barangay Binloc disaster response.';
@@ -81,7 +82,6 @@ include '../../includes/header.php';
                 </tbody></table></div>
             </section>
         </main>
-        <?php include '../../includes/footer.php'; ?>
     </div>
 </div>
 
@@ -103,3 +103,4 @@ include '../../includes/header.php';
         <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-brand" type="submit"><i class="bi bi-file-earmark-check" aria-hidden="true"></i> Generate report</button></div>
     </form>
 </div></div></div>
+<?php include '../../includes/footer.php'; ?>

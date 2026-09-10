@@ -44,7 +44,7 @@
         const relatedFilters = [
             ...document.querySelectorAll(`[data-filter-table="${selector}"], [data-filter-select="${selector}"]`),
         ];
-        const counter = document.querySelector(`[data-table-count="${selector}"]`);
+        const counter = document.querySelector(`[data-table-count="${selector}"]`) || document.querySelector('[data-filter-results]');
         const empty = document.querySelector(`[data-table-empty="${selector}"]`);
 
         const run = () => {
@@ -56,7 +56,7 @@
                     const value = normalize(filter.value);
                     if (!value || value === 'all') return true;
                     const field = filter.dataset.filterField;
-                    return normalize(field ? row.dataset[field] : row.textContent).includes(value);
+                    return field ? normalize(row.dataset[field]) === value : normalize(row.textContent).includes(value);
                 });
                 const visible = searchMatch && filterMatch;
                 row.hidden = !visible;
@@ -98,13 +98,31 @@
         });
     });
 
-    document.querySelectorAll('[data-print]').forEach((button) => {
-        button.addEventListener('click', () => window.print());
-    });
+    document.querySelectorAll('[data-print]').forEach((button) => button.addEventListener('click', () => window.print()));
     document.querySelectorAll('[data-export]').forEach((button) => {
         button.addEventListener('click', () => {
-            window.sagipbroToast?.(`${button.dataset.export || 'Report'} export is ready in this UI preview.`, 'Export prepared');
+            const source = document.querySelector(button.dataset.export || '');
+            const table = source?.matches('table') ? source : source?.querySelector('table');
+            const filename = `${button.dataset.exportName || 'sagipbro-report'}.csv`;
+            if (table) {
+                const rows = [...table.querySelectorAll('tr')].filter((row) => !row.hidden);
+                const csv = rows.map((row) => [...row.querySelectorAll('th,td')].map((cell) => `"${cell.innerText.trim().replaceAll('"', '""')}"`).join(',')).join('\r\n');
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' }));
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.setTimeout(() => URL.revokeObjectURL(link.href), 500);
+                window.sagipbroToast?.(`${filename} has been prepared.`, 'Export ready');
+                return;
+            }
+            window.sagipbroToast?.('This report export is ready for backend data integration.', 'Export prepared');
         });
+    });
+
+    document.querySelectorAll('[data-confirm-action]:not([type="submit"])').forEach((button) => {
+        button.addEventListener('click', () => window.sagipbroToast?.(button.dataset.confirmAction, 'Action complete'));
     });
 
     globalSearch?.addEventListener('input', () => {

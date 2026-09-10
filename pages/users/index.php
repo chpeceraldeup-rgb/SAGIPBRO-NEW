@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin']);
 
 $pageTitle = 'Users';
 $pageDescription = 'Manage access, roles, and account status for SAGIPBRO personnel.';
@@ -60,7 +61,7 @@ include '../../includes/header.php';
                             <tbody>
                                 <?php foreach ($users as $user): ?>
                                     <?php $roleClass = $user[4] === 'Administrator' ? 'status-danger' : ($user[4] === 'Barangay Official' ? 'status-info' : ($user[4] === 'Volunteer' ? 'status-warning' : 'status-neutral')); ?>
-                                    <tr data-role="<?= htmlspecialchars($user[4], ENT_QUOTES, 'UTF-8') ?>" data-status="<?= htmlspecialchars($user[7], ENT_QUOTES, 'UTF-8') ?>">
+                                    <tr data-row data-role="<?= htmlspecialchars($user[4], ENT_QUOTES, 'UTF-8') ?>" data-status="<?= htmlspecialchars($user[7], ENT_QUOTES, 'UTF-8') ?>">
                                         <td><span class="table-avatar" aria-hidden="true"><?= htmlspecialchars($user[2], ENT_QUOTES, 'UTF-8') ?></span><span class="d-inline-block align-middle"><span class="table-primary-text"><?= htmlspecialchars($user[1], ENT_QUOTES, 'UTF-8') ?></span><span class="table-secondary-text"><?= htmlspecialchars($user[0], ENT_QUOTES, 'UTF-8') ?></span></span></td>
                                         <td><span class="table-primary-text"><?= htmlspecialchars($user[3], ENT_QUOTES, 'UTF-8') ?></span></td>
                                         <td><span class="status-badge <?= $roleClass ?>"><?= htmlspecialchars($user[4], ENT_QUOTES, 'UTF-8') ?></span></td>
@@ -77,7 +78,6 @@ include '../../includes/header.php';
                 </div>
             </section>
         </main>
-        <?php include '../../includes/footer.php'; ?>
     </div>
 </div>
 
@@ -124,3 +124,4 @@ include '../../includes/header.php';
         <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Keep active</button><button class="btn btn-danger" type="submit"><i class="bi bi-person-x" aria-hidden="true"></i> Deactivate account</button></div>
     </form>
 </div></div></div>
+<?php include '../../includes/footer.php'; ?>

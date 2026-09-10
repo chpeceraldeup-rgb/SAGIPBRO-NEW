@@ -8,7 +8,7 @@ include __DIR__ . '/includes/header.php';
 include __DIR__ . '/includes/navbar.php';
 ?>
 <main id="main-content">
-    <section class="page-hero" aria-labelledby="about-page-title">
+    <section class="page-hero about-hero" aria-labelledby="about-page-title">
         <div class="container">
             <nav aria-label="Breadcrumb">
                 <ol class="breadcrumb">
@@ -48,6 +48,7 @@ include __DIR__ . '/includes/navbar.php';
                     <span>Philippine Standard Geographic Code</span>
                 </div>
             </div>
+            <p class="mt-3 mb-0 text-center small text-secondary">Community facts: <a href="https://psa.gov.ph/classification/psgc/brgydetail/0105518007" target="_blank" rel="noopener noreferrer">Philippine Statistics Authority barangay profile <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></p>
         </div>
     </section>
 

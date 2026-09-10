@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official']);
 
 $pageTitle = 'Resource Management';
 $pageDescription = 'Track available relief supplies, stock levels, and replenishment needs in SAGIPBRO.';

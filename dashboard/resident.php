@@ -22,7 +22,7 @@ require __DIR__ . '/../includes/navbar.php';
             <?php require __DIR__ . '/../includes/alerts.php'; ?>
             <div class="quick-grid mb-4">
                 <a class="quick-card" href="../resources.php"><span class="quick-icon"><i class="bi bi-box-seam"></i></span><h3>Available resources</h3><p>View the latest public relief supply information and stock status.</p><span class="quick-link">Browse resources <i class="bi bi-arrow-right"></i></span></a>
-                <a class="quick-card" href="../services.php#evacuation-centers"><span class="quick-icon"><i class="bi bi-buildings"></i></span><h3>Evacuation information</h3><p>Review center capacity, availability, and preparedness information.</p><span class="quick-link">View centers <i class="bi bi-arrow-right"></i></span></a>
+                <a class="quick-card" href="../evacuation-centers.php"><span class="quick-icon"><i class="bi bi-buildings"></i></span><h3>Evacuation information</h3><p>Review center capacity, availability, and preparedness information.</p><span class="quick-link">View centers <i class="bi bi-arrow-right"></i></span></a>
                 <a class="quick-card" href="../contact.php"><span class="quick-icon"><i class="bi bi-telephone"></i></span><h3>Emergency contacts</h3><p>Save the verified Dagupan City response numbers before you need them.</p><span class="quick-link">Contact directory <i class="bi bi-arrow-right"></i></span></a>
             </div>
             <div class="contact-layout">

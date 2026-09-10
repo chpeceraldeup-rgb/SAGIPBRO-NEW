@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official', 'volunteer']);
 
 $pageTitle = 'Relief Distributions';
 $pageDescription = 'Record and review accountable relief distributions for Barangay Binloc residents.';

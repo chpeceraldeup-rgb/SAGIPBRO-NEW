@@ -1,3 +1,9 @@
+/* Match public photo banner heights on desktop without constraining mobile content. */
+@media (min-width: 992px) {
+    .home-hero, .page-hero.about-hero, .page-hero.services-hero { min-height: 35rem; }
+    .home-hero .hero-content { padding: 3rem 0 6rem; }
+}
+
 @media (max-width: 1199.98px) {
     .footer-grid { grid-template-columns: 1.3fr .7fr 1fr; gap: 2rem; }
     .footer-emergency { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .5rem 1.5rem; padding: 1.25rem; border-radius: var(--radius-md); background: rgba(255,255,255,.055); }
@@ -14,7 +20,7 @@
     .public-navbar .nav-link::after { display: none; }
     .public-navbar .nav-link { border-radius: .55rem; }
     .public-navbar .nav-link.active { background: var(--green-50); }
-    .home-hero { min-height: 610px; background-image: linear-gradient(90deg, rgba(3,39,25,.96) 0%, rgba(4,50,32,.83) 48%, rgba(3,31,21,.4) 100%), url('../images/hero-relief.png'); background-position: 58% center; }
+    .home-hero { min-height: 610px; background-image: linear-gradient(90deg, rgba(3,39,25,.96) 0%, rgba(4,50,32,.83) 48%, rgba(3,31,21,.4) 100%), url('../images/relief-distribution-grotto.png'); background-position: 58% center; }
     .hero-content { max-width: 610px; padding: 5rem 0 7rem; }
     .quick-grid { grid-template-columns: repeat(2, 1fr); }
     .quick-card:last-child { grid-column: 1 / -1; min-height: 210px; }
@@ -64,6 +70,14 @@
     .cta-actions { width: 100%; flex-wrap: wrap; }
     .cta-actions .btn { flex: 1 1 180px; }
     .page-hero { padding: 4rem 0 3.75rem; }
+    .page-hero.about-hero {
+        background-image: linear-gradient(90deg, rgba(3,39,25,.92), rgba(3,39,25,.8)), url('../images/food-pack-distribution-pavilion.png');
+        background-position: 58% center;
+    }
+    .page-hero.services-hero {
+        background-image: linear-gradient(90deg, rgba(3,39,25,.92), rgba(3,39,25,.8)), url('../images/services-community.png');
+        background-position: center 35%;
+    }
     .stat-band { grid-template-columns: repeat(2, 1fr); }
     .public-stat:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
     .public-stat:nth-child(4) { border-top: 1px solid var(--line); }
@@ -122,6 +136,7 @@
     .footer-bottom { align-items: flex-start !important; flex-direction: column; gap: .35rem; }
 
     .admin-topbar-actions { gap: .35rem; }
+    .page-actions .btn { width: 100%; flex: 1 1 100%; }
     .admin-topbar .icon-button { width: 39px; height: 39px; }
     .stat-grid { grid-template-columns: 1fr; }
     .filter-toolbar > *, .filter-toolbar .filter-field { width: 100%; min-width: 100%; }

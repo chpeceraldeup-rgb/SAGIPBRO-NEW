@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/auth_check.php';
+requireRole(['admin', 'official']);
 
 $pageTitle = 'Volunteers';
 $pageDescription = 'Coordinate trained disaster response volunteers in Barangay Binloc.';
@@ -71,7 +72,7 @@ include '../../includes/header.php';
                             <tbody>
                                 <?php foreach ($volunteers as $volunteer): ?>
                                     <?php $statusClass = $volunteer[7] === 'Active' ? 'status-success' : ($volunteer[7] === 'Deployed' ? 'status-info' : 'status-neutral'); ?>
-                                    <tr data-status="<?= htmlspecialchars($volunteer[7], ENT_QUOTES, 'UTF-8') ?>">
+                                    <tr data-row data-status="<?= htmlspecialchars($volunteer[7], ENT_QUOTES, 'UTF-8') ?>">
                                         <td><span class="table-avatar" aria-hidden="true"><?= htmlspecialchars($volunteer[2], ENT_QUOTES, 'UTF-8') ?></span><span class="d-inline-block align-middle"><span class="table-primary-text"><?= htmlspecialchars($volunteer[1], ENT_QUOTES, 'UTF-8') ?></span><span class="table-secondary-text"><?= htmlspecialchars($volunteer[0], ENT_QUOTES, 'UTF-8') ?></span></span></td>
                                         <td><?= htmlspecialchars($volunteer[3], ENT_QUOTES, 'UTF-8') ?></td>
                                         <td><span class="table-primary-text"><?= htmlspecialchars($volunteer[4], ENT_QUOTES, 'UTF-8') ?></span></td>
@@ -88,7 +89,6 @@ include '../../includes/header.php';
                 </div>
             </section>
         </main>
-        <?php include '../../includes/footer.php'; ?>
     </div>
 </div>
 
@@ -132,3 +132,4 @@ include '../../includes/header.php';
         </form>
     </div></div>
 </div>
+<?php include '../../includes/footer.php'; ?>

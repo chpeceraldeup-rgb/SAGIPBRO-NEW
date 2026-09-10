@@ -113,3 +113,32 @@ CREATE TABLE IF NOT EXISTS activity_logs (
 CREATE INDEX idx_residents_household ON residents(household_id);
 CREATE INDEX idx_evacuees_center_active ON evacuees(center_id, checked_out_at);
 CREATE INDEX idx_logs_created ON activity_logs(created_at);
+
+-- Public distribution schedules are separate from private recipient transactions.
+CREATE TABLE IF NOT EXISTS distribution_events (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(180) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    details TEXT NULL,
+    starts_at DATETIME NOT NULL,
+    ends_at DATETIME NULL,
+    status ENUM('Upcoming', 'Active', 'Completed', 'Cancelled') NOT NULL DEFAULT 'Upcoming',
+    publication_status ENUM('Draft', 'Published') NOT NULL DEFAULT 'Draft',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_public_event_schedule (publication_status, status, starts_at)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS distribution_event_resources (
+    event_id INT UNSIGNED NOT NULL,
+    resource_id INT UNSIGNED NOT NULL,
+    planned_quantity DECIMAL(12,2) UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (event_id, resource_id),
+    CONSTRAINT fk_public_event_plan FOREIGN KEY (event_id) REFERENCES distribution_events(id) ON DELETE CASCADE,
+    CONSTRAINT fk_public_event_resource FOREIGN KEY (resource_id) REFERENCES resources(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+ALTER TABLE distributions ADD COLUMN event_id INT UNSIGNED NULL,
+    ADD CONSTRAINT fk_distribution_public_event FOREIGN KEY (event_id) REFERENCES distribution_events(id) ON DELETE SET NULL;
+ALTER TABLE announcements ADD COLUMN priority ENUM('Normal', 'Urgent') NOT NULL DEFAULT 'Normal',
+    ADD COLUMN expires_at DATETIME NULL;
