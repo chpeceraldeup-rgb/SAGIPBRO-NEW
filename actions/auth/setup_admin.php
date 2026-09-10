@@ -1,6 +1,6 @@
 <?php
 
-require_once "../../config/database.php";
+require_once __DIR__ . "/../../config/database.php";
 
 if (PHP_SAPI !== 'cli') {
     http_response_code(403);
@@ -10,8 +10,8 @@ if (PHP_SAPI !== 'cli') {
 $full_name = getenv('SAGIPBRO_ADMIN_NAME') ?: 'SAGIPBRO Administrator';
 $username = getenv('SAGIPBRO_ADMIN_USERNAME');
 $password = getenv('SAGIPBRO_ADMIN_PASSWORD');
-if (!$username || !$password || strlen($password) < 8) {
-    exit("Set SAGIPBRO_ADMIN_USERNAME and an 8-character SAGIPBRO_ADMIN_PASSWORD first.\n");
+if (!$username || !$password || strlen($password) < 3) {
+    exit("Set SAGIPBRO_ADMIN_USERNAME and a 3-character SAGIPBRO_ADMIN_PASSWORD first.\n");
 }
 
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
