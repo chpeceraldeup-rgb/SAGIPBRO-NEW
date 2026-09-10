@@ -8,15 +8,6 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'residents';
 
-$residents = [
-    ['BIN-0241', 'Ana Mae Ramos', 'AM', 'HH-2026-041', 'Purok 1, Riverside', '34', '0917 624 1842', 'Pregnant', 'Active'],
-    ['BIN-0238', 'Roberto de Vera', 'RD', 'HH-2026-038', 'Purok 3, Mabini St.', '67', '0928 114 6720', 'Senior citizen', 'Active'],
-    ['BIN-0234', 'Liza Manalo', 'LM', 'HH-2026-034', 'Purok 2, Bonuan Rd.', '42', '0995 302 8011', 'None', 'Active'],
-    ['BIN-0229', 'Joel Santiago', 'JS', 'HH-2026-029', 'Purok 5, Coastal Area', '29', '0916 443 0921', 'PWD', 'Active'],
-    ['BIN-0224', 'Marites Aquino', 'MA', 'HH-2026-024', 'Purok 4, Narra St.', '51', '0920 861 3390', 'Solo parent', 'Active'],
-    ['BIN-0219', 'Carlo Mendoza', 'CM', 'HH-2026-019', 'Purok 6, Sitio Centro', '25', '0908 576 1412', 'None', 'Inactive'],
-];
-
 include '../../includes/header.php';
 ?>
 <div class="admin-shell">
@@ -136,6 +127,7 @@ include '../../includes/header.php';
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
+
                         </table>
                     </div>
                     <div class="data-card-footer record-summary">
@@ -158,7 +150,7 @@ include '../../includes/header.php';
 <div class="modal fade" id="addResidentModal" tabindex="-1" aria-labelledby="addResidentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form action="index.php" method="post" data-demo-form data-toast-message="Resident record added successfully.">
+            <form id="addResidentForm">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="modal-header">
                     <div><h2 class="modal-title" id="addResidentModalLabel">Add resident</h2><p class="mb-0 mt-1 small text-body-secondary">Create a resident and household profile for relief planning.</p></div>
@@ -169,9 +161,9 @@ include '../../includes/header.php';
                         <div class="col-md-6"><label class="form-label" for="residentFirstName">First name <span class="required-mark">*</span></label><input class="form-control" id="residentFirstName" name="first_name" required autocomplete="given-name"></div>
                         <div class="col-md-6"><label class="form-label" for="residentLastName">Last name <span class="required-mark">*</span></label><input class="form-control" id="residentLastName" name="last_name" required autocomplete="family-name"></div>
                         <div class="col-md-4"><label class="form-label" for="residentBirthDate">Birth date</label><input class="form-control" id="residentBirthDate" name="birth_date" type="date"></div>
-                        <div class="col-md-4"><label class="form-label" for="residentSex">Sex</label><select class="form-select" id="residentSex" name="sex"><option>Female</option><option>Male</option><option>Prefer not to say</option></select></div>
+                        <div class="col-md-4"><label class="form-label" for="residentSex">Sex</label><select class="form-select" id="residentSex" name="sex"><option>Female</option><option>Male</option><option>Other</option></select></div>
                         <div class="col-md-4"><label class="form-label" for="residentContact">Contact number</label><input class="form-control" id="residentContact" name="contact" type="tel" autocomplete="tel" placeholder="09XX XXX XXXX"></div>
-                        <div class="col-md-6"><label class="form-label" for="residentHousehold">Household ID <span class="required-mark">*</span></label><input class="form-control" id="residentHousehold" name="household_id" required placeholder="HH-2026-000"></div>
+                        <div class="col-md-6"><label class="form-label" for="residentHousehold">Household ID</label><input class="form-control" id="residentHousehold" name="household_id" placeholder="HH-2026-000"></div>
                         <div class="col-md-6"><label class="form-label" for="residentPriority">Priority group</label><select class="form-select" id="residentPriority" name="priority_group"><option>None</option><option>Senior citizen</option><option>PWD</option><option>Pregnant</option><option>Solo parent</option><option>Child under five</option></select></div>
                         <div class="col-12"><label class="form-label" for="residentAddress">Complete address <span class="required-mark">*</span></label><textarea class="form-control" id="residentAddress" name="address" rows="3" required autocomplete="street-address"></textarea></div>
                     </div>
@@ -182,12 +174,20 @@ include '../../includes/header.php';
     </div>
 </div>
 
+<script>
+    window.sagipbroResidentApi = {
+        endpoint: <?= json_encode(appUrl('api/residents.php')) ?>,
+        csrfToken: <?= json_encode(csrfToken()) ?>
+    };
+</script>
+<script src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/js/residents-api.js"></script>
+
 <div class="modal fade" id="viewResidentModal" tabindex="-1" aria-labelledby="viewResidentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header"><h2 class="modal-title" id="viewResidentModalLabel">Resident profile</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
             <div class="modal-body">
-                <div class="d-flex align-items-center gap-3 mb-4"><span class="profile-avatar-large m-0" aria-hidden="true">AR</span><div><h3 class="h5 mb-1">Ana Mae Ramos</h3><span class="status-badge status-success">Active record</span></div></div>
+                <div class="d-flex align-items-center gap-3 mb-4"><span class="profile-avatar-large m-0" aria-hidden="true">--</span><div><h3 class="h5 mb-1">No resident selected</h3><span class="status-badge status-neutral">No record</span></div></div>
                 <dl class="row mb-0 small">
                     <dt class="col-5 text-body-secondary">Resident ID</dt><dd class="col-7">BIN-0241</dd>
                     <dt class="col-5 text-body-secondary">Household</dt><dd class="col-7">HH-2026-041</dd>
@@ -205,12 +205,12 @@ include '../../includes/header.php';
 <div class="modal fade" id="editResidentModal" tabindex="-1" aria-labelledby="editResidentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="index.php" method="post" data-demo-form data-toast-message="Resident changes saved.">
+            <form id="editResidentForm">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="modal-header"><h2 class="modal-title" id="editResidentModalLabel">Edit resident record</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
                 <div class="modal-body">
                     <p class="modal-intro">Update the selected resident's basic contact and classification information.</p>
-                    <div class="mb-3"><label class="form-label" for="editResidentName">Full name</label><input class="form-control" id="editResidentName" name="full_name" value="Ana Mae Ramos" required></div>
+                    <div class="mb-3"><label class="form-label" for="editResidentName">Full name</label><input class="form-control" id="editResidentName" name="full_name" value="" required></div>
                     <div class="mb-3"><label class="form-label" for="editResidentContact">Contact number</label><input class="form-control" id="editResidentContact" name="contact" value="0917 624 1842" type="tel"></div>
                     <div class="mb-3"><label class="form-label" for="editResidentPriority">Priority group</label><select class="form-select" id="editResidentPriority" name="priority_group"><option>None</option><option>Senior citizen</option><option>PWD</option><option selected>Pregnant</option><option>Solo parent</option></select></div>
                     <div><label class="form-label" for="editResidentStatus">Record status</label><select class="form-select" id="editResidentStatus" name="status"><option selected>Active</option><option>Inactive</option></select></div>

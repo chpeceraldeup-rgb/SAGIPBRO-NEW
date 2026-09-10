@@ -8,14 +8,7 @@ $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'volunteers';
 
-$volunteers = [
-    ['VOL-078', 'Paolo Garcia', 'PG', 'First aid, CPR', 'Medical team', '0917 883 2014', 'On call', 'Active'],
-    ['VOL-074', 'Denise Fernandez', 'DF', 'Inventory, logistics', 'Relief warehouse', '0928 713 6621', 'Weekdays', 'Active'],
-    ['VOL-069', 'Mark Villanueva', 'MV', 'Boat operation, rescue', 'Search and rescue', '0998 461 3207', '24/7 response', 'Deployed'],
-    ['VOL-063', 'Joanna Lim', 'JL', 'Counseling, child care', 'Family support desk', '0915 907 4428', 'Weekends', 'Active'],
-    ['VOL-058', 'Ramon Castro', 'RC', 'Driving, radio comms', 'Transport unit', '0920 338 7502', 'Evenings', 'Active'],
-    ['VOL-051', 'Sheila Bautista', 'SB', 'Food preparation', 'Community kitchen', '0907 552 1189', 'Unavailable', 'Inactive'],
-];
+$volunteers = [];
 
 include '../../includes/header.php';
 ?>
