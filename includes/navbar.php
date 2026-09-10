@@ -4,7 +4,7 @@ $activePage = $activePage ?? '';
 $isAdmin = $isAdmin ?? false;
 
 if ($isAdmin):
-    $adminName = $_SESSION['full_name'] ?? 'Maria Santos';
+    $adminName = $_SESSION['username'] ?? $_SESSION['full_name'] ?? 'Admin';
     $adminRole = ucfirst($_SESSION['role'] ?? 'Administrator');
 ?>
 <header class="admin-topbar">

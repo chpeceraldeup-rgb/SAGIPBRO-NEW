@@ -7,6 +7,7 @@ $pageDescription = 'Manage resident and household records for Barangay Binloc.';
 $basePath = '../../';
 $isAdmin = true;
 $activeAdmin = 'residents';
+$residents = [];
 
 include '../../includes/header.php';
 ?>
@@ -39,23 +40,23 @@ include '../../includes/header.php';
             <section class="stat-grid" aria-label="Resident overview">
                 <article class="stat-card">
                     <div class="stat-card-top"><span class="stat-card-label">Registered residents</span><span class="stat-card-icon"><i class="bi bi-people-fill" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">1,284</strong>
-                    <span class="stat-meta"><span class="trend-up">+18</span> this month</span>
+                    <strong class="stat-value">0</strong>
+                    <span class="stat-meta">No resident records yet</span>
                 </article>
                 <article class="stat-card info">
                     <div class="stat-card-top"><span class="stat-card-label">Households</span><span class="stat-card-icon"><i class="bi bi-house-door-fill" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">342</strong>
-                    <span class="stat-meta">3.8 residents per household</span>
+                    <strong class="stat-value">0</strong>
+                    <span class="stat-meta">No household records yet</span>
                 </article>
                 <article class="stat-card warning">
                     <div class="stat-card-top"><span class="stat-card-label">Priority residents</span><span class="stat-card-icon"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">176</strong>
-                    <span class="stat-meta">Seniors, PWDs and high-risk groups</span>
+                    <strong class="stat-value">0</strong>
+                    <span class="stat-meta">No priority records yet</span>
                 </article>
                 <article class="stat-card">
                     <div class="stat-card-top"><span class="stat-card-label">Records verified</span><span class="stat-card-icon"><i class="bi bi-patch-check-fill" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">96%</strong>
-                    <span class="stat-meta">Updated within the last 12 months</span>
+                    <strong class="stat-value">0%</strong>
+                    <span class="stat-meta">No verified records yet</span>
                 </article>
             </section>
 
@@ -76,7 +77,7 @@ include '../../includes/header.php';
                             <option value="Inactive">Inactive</option>
                         </select>
                     </div>
-                    <span class="filter-results" aria-live="polite">Showing 6 recent records</span>
+                    <span class="filter-results" aria-live="polite">Showing 0 records</span>
                 </div>
 
                 <div class="data-card">
@@ -131,7 +132,7 @@ include '../../includes/header.php';
                         </table>
                     </div>
                     <div class="data-card-footer record-summary">
-                        <span>Showing 1–6 of 1,284 residents</span>
+                        <span>Showing 0 of 0 residents</span>
                         <nav aria-label="Resident table pages">
                             <ul class="pagination">
                                 <li class="page-item disabled"><button class="page-link" type="button" disabled aria-label="Previous page"><i class="bi bi-chevron-left" aria-hidden="true"></i></button></li>

@@ -30,10 +30,10 @@ include '../../includes/header.php';
             </header>
 
             <section class="stat-grid" aria-label="Volunteer overview">
-                <article class="stat-card"><div class="stat-card-top"><span class="stat-card-label">Registered volunteers</span><span class="stat-card-icon"><i class="bi bi-person-hearts" aria-hidden="true"></i></span></div><strong class="stat-value">86</strong><span class="stat-meta"><span class="trend-up">+7</span> since August</span></article>
-                <article class="stat-card info"><div class="stat-card-top"><span class="stat-card-label">Ready for deployment</span><span class="stat-card-icon"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i></span></div><strong class="stat-value">62</strong><span class="stat-meta">Available within two hours</span></article>
-                <article class="stat-card warning"><div class="stat-card-top"><span class="stat-card-label">Currently deployed</span><span class="stat-card-icon"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></span></div><strong class="stat-value">14</strong><span class="stat-meta">Across 3 active assignments</span></article>
-                <article class="stat-card"><div class="stat-card-top"><span class="stat-card-label">Training compliance</span><span class="stat-card-icon"><i class="bi bi-award-fill" aria-hidden="true"></i></span></div><strong class="stat-value">91%</strong><span class="stat-meta">Safety orientation completed</span></article>
+                <article class="stat-card"><div class="stat-card-top"><span class="stat-card-label">Registered volunteers</span><span class="stat-card-icon"><i class="bi bi-person-hearts" aria-hidden="true"></i></span></div><strong class="stat-value">0</strong><span class="stat-meta">No volunteer records yet</span></article>
+                <article class="stat-card info"><div class="stat-card-top"><span class="stat-card-label">Ready for deployment</span><span class="stat-card-icon"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i></span></div><strong class="stat-value">0</strong><span class="stat-meta">No available volunteers yet</span></article>
+                <article class="stat-card warning"><div class="stat-card-top"><span class="stat-card-label">Currently deployed</span><span class="stat-card-icon"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></span></div><strong class="stat-value">0</strong><span class="stat-meta">No active assignments yet</span></article>
+                <article class="stat-card"><div class="stat-card-top"><span class="stat-card-label">Training compliance</span><span class="stat-card-icon"><i class="bi bi-award-fill" aria-hidden="true"></i></span></div><strong class="stat-value">0%</strong><span class="stat-meta">No training records yet</span></article>
             </section>
 
             <div class="info-callout mb-3" role="note">
@@ -53,7 +53,7 @@ include '../../includes/header.php';
                             <option value="">All statuses</option><option value="Active">Active</option><option value="Deployed">Deployed</option><option value="Inactive">Inactive</option>
                         </select>
                     </div>
-                    <span class="filter-results" aria-live="polite">Showing 6 volunteer records</span>
+                    <span class="filter-results" aria-live="polite">Showing 0 volunteer records</span>
                 </div>
 
                 <div class="data-card">
@@ -78,7 +78,7 @@ include '../../includes/header.php';
                             </tbody>
                         </table>
                     </div>
-                    <div class="data-card-footer record-summary"><span>Showing 1–6 of 86 volunteers</span><span>Updated 10 minutes ago</span></div>
+                    <div class="data-card-footer record-summary"><span>Showing 0 of 0 volunteers</span><span>No volunteer records yet</span></div>
                 </div>
             </section>
         </main>
@@ -108,8 +108,8 @@ include '../../includes/header.php';
     <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
         <div class="modal-header"><h2 class="modal-title" id="viewVolunteerModalLabel">Volunteer profile</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body">
-            <div class="d-flex align-items-center gap-3 mb-4"><span class="profile-avatar-large m-0" aria-hidden="true">PG</span><div><h3 class="h5 mb-1">Paolo Garcia</h3><span class="status-badge status-success">Ready for deployment</span></div></div>
-            <dl class="row mb-0 small"><dt class="col-5 text-body-secondary">Volunteer ID</dt><dd class="col-7">VOL-078</dd><dt class="col-5 text-body-secondary">Skills</dt><dd class="col-7">First aid, CPR</dd><dt class="col-5 text-body-secondary">Assignment</dt><dd class="col-7">Medical team</dd><dt class="col-5 text-body-secondary">Availability</dt><dd class="col-7">On call</dd><dt class="col-5 text-body-secondary">Contact</dt><dd class="col-7">0917 883 2014</dd><dt class="col-5 text-body-secondary">Last briefing</dt><dd class="col-7 mb-0">September 7, 2026</dd></dl>
+            <div class="d-flex align-items-center gap-3 mb-4"><span class="profile-avatar-large m-0" aria-hidden="true">--</span><div><h3 class="h5 mb-1">No volunteer selected</h3><span class="status-badge status-neutral">No records</span></div></div>
+            <dl class="row mb-0 small"><dt class="col-5 text-body-secondary">Volunteer ID</dt><dd class="col-7">Not available</dd><dt class="col-5 text-body-secondary">Skills</dt><dd class="col-7">Not available</dd><dt class="col-5 text-body-secondary">Assignment</dt><dd class="col-7">Not available</dd><dt class="col-5 text-body-secondary">Availability</dt><dd class="col-7">Not available</dd><dt class="col-5 text-body-secondary">Contact</dt><dd class="col-7">Not available</dd><dt class="col-5 text-body-secondary">Last briefing</dt><dd class="col-7 mb-0">Not available</dd></dl>
         </div>
         <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-brand" type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#editVolunteerModal"><i class="bi bi-pencil" aria-hidden="true"></i> Edit profile</button></div>
     </div></div>

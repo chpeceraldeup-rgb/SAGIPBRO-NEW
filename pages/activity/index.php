@@ -30,10 +30,10 @@ include '../../includes/header.php';
             </header>
 
             <section class="stat-grid" aria-label="Activity log overview">
-                <article class="stat-card"><div class="stat-card-top"><span class="stat-card-label">Events today</span><span class="stat-card-icon"><i class="bi bi-activity" aria-hidden="true"></i></span></div><strong class="stat-value">146</strong><span class="stat-meta"><span class="trend-up">+12%</span> from yesterday</span></article>
-                <article class="stat-card info"><div class="stat-card-top"><span class="stat-card-label">Active users</span><span class="stat-card-icon"><i class="bi bi-people-fill" aria-hidden="true"></i></span></div><strong class="stat-value">23</strong><span class="stat-meta">Within the last 24 hours</span></article>
-                <article class="stat-card warning"><div class="stat-card-top"><span class="stat-card-label">Warnings</span><span class="stat-card-icon"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i></span></div><strong class="stat-value">3</strong><span class="stat-meta">Require administrator review</span></article>
-                <article class="stat-card danger"><div class="stat-card-top"><span class="stat-card-label">Blocked attempts</span><span class="stat-card-icon"><i class="bi bi-shield-x" aria-hidden="true"></i></span></div><strong class="stat-value">1</strong><span class="stat-meta">Automatically contained</span></article>
+                <article class="stat-card"><div class="stat-card-top"><span class="stat-card-label">Events today</span><span class="stat-card-icon"><i class="bi bi-activity" aria-hidden="true"></i></span></div><strong class="stat-value">0</strong><span class="stat-meta">No events recorded today</span></article>
+                <article class="stat-card info"><div class="stat-card-top"><span class="stat-card-label">Active users</span><span class="stat-card-icon"><i class="bi bi-people-fill" aria-hidden="true"></i></span></div><strong class="stat-value">0</strong><span class="stat-meta">No recent user activity</span></article>
+                <article class="stat-card warning"><div class="stat-card-top"><span class="stat-card-label">Warnings</span><span class="stat-card-icon"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i></span></div><strong class="stat-value">0</strong><span class="stat-meta">No warnings require review</span></article>
+                <article class="stat-card danger"><div class="stat-card-top"><span class="stat-card-label">Blocked attempts</span><span class="stat-card-icon"><i class="bi bi-shield-x" aria-hidden="true"></i></span></div><strong class="stat-value">0</strong><span class="stat-meta">No blocked attempts</span></article>
             </section>
 
             <div class="info-callout mb-3" role="note"><i class="bi bi-shield-check" aria-hidden="true"></i><div><strong>Audit records are read-only</strong><span>Logs help Barangay Binloc account for system changes. Times are shown in Philippine Standard Time (UTC+8).</span></div></div>
@@ -42,7 +42,7 @@ include '../../includes/header.php';
                 <div class="filter-toolbar">
                     <div class="search-field"><label for="activitySearch">Search activity</label><div class="input-icon"><i class="bi bi-search" aria-hidden="true"></i><input class="form-control" id="activitySearch" type="search" placeholder="User, event, module, record or IP" autocomplete="off" data-table-search="#activityLogsTable"></div></div>
                     <div class="filter-field"><label for="activityTypeFilter">Event type</label><select class="form-select" id="activityTypeFilter" data-filter-select="#activityLogsTable" data-filter-field="action"><option value="">All events</option><option value="Created">Created</option><option value="Updated">Updated</option><option value="Published">Published</option><option value="Signed in">Signed in</option><option value="Exported">Exported</option><option value="Warning">Warning</option><option value="Blocked">Blocked</option></select></div>
-                    <span class="filter-results" aria-live="polite">Showing 8 latest events</span>
+                    <span class="filter-results" aria-live="polite">Showing 0 latest events</span>
                 </div>
 
                 <div class="data-card">
@@ -67,7 +67,7 @@ include '../../includes/header.php';
                             </tbody>
                         </table>
                     </div>
-                    <div class="data-card-footer record-summary"><span>Showing 1–8 of 4,918 retained events</span><span>Retention period: 24 months</span></div>
+                    <div class="data-card-footer record-summary"><span>Showing 0 of 0 retained events</span><span>No activity records yet</span></div>
                 </div>
             </section>
         </main>
