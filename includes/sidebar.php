@@ -1,0 +1,65 @@
+<?php
+$basePath = $basePath ?? '../../';
+$activeAdmin = $activeAdmin ?? 'dashboard';
+$sidebarRole = $_SESSION['role'] ?? 'admin';
+$dashboardFile = $sidebarRole === 'volunteer' ? 'dashboard/volunteer.php' : 'dashboard/admin.php';
+$sidebarGroups = [
+    'Overview' => [
+        ['dashboard', 'Dashboard', 'bi-grid-1x2-fill', $dashboardFile],
+    ],
+    'Operations' => [
+        ['resources', 'Resources', 'bi-box-seam-fill', 'pages/resources/index.php'],
+        ['evacuation', 'Evacuation centers', 'bi-buildings-fill', 'pages/evacuation/index.php'],
+        ['distributions', 'Distributions', 'bi-truck', 'pages/distribution/index.php'],
+    ],
+    'People' => [
+        ['residents', 'Residents', 'bi-people-fill', 'pages/residents/index.php'],
+        ['volunteers', 'Volunteers', 'bi-person-hearts', 'pages/volunteers/index.php'],
+    ],
+    'Communication' => [
+        ['announcements', 'Announcements', 'bi-megaphone-fill', 'pages/announcements/index.php'],
+        ['reports', 'Reports', 'bi-bar-chart-fill', 'pages/reports/index.php'],
+    ],
+    'Administration' => [
+        ['users', 'Users', 'bi-person-gear', 'pages/users/index.php'],
+        ['activity', 'Activity logs', 'bi-clock-history', 'pages/activity/index.php'],
+    ],
+];
+if ($sidebarRole === 'volunteer') {
+    $sidebarGroups = [
+        'Overview' => $sidebarGroups['Overview'],
+        'Operations' => $sidebarGroups['Operations'],
+        'Communication' => [
+            ['announcements', 'Announcements', 'bi-megaphone-fill', 'pages/announcements/index.php'],
+        ],
+    ];
+}
+?>
+<aside class="admin-sidebar" id="adminSidebar" aria-label="Administration navigation">
+    <div class="sidebar-brand">
+        <a class="brand-lockup" href="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>dashboard/admin.php">
+            <img src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/images/sagipbro-mark.svg" alt="" width="40" height="45">
+            <span><strong>SAGIPBRO</strong><small>Admin console</small></span>
+        </a>
+        <button class="icon-button sidebar-close d-lg-none" type="button" aria-label="Close navigation"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <nav class="sidebar-nav">
+        <?php foreach ($sidebarGroups as $group => $items): ?>
+            <p class="sidebar-label"><?= htmlspecialchars($group, ENT_QUOTES, 'UTF-8') ?></p>
+            <ul>
+                <?php foreach ($items as [$key, $label, $icon, $href]): ?>
+                    <li><a class="sidebar-link<?= $activeAdmin === $key ? ' active' : '' ?>" <?= $activeAdmin === $key ? 'aria-current="page"' : '' ?> href="<?= htmlspecialchars($basePath . $href, ENT_QUOTES, 'UTF-8') ?>"><i class="bi <?= htmlspecialchars($icon, ENT_QUOTES, 'UTF-8') ?>" aria-hidden="true"></i><span><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></span><?php if ($key === 'announcements'): ?><span class="sidebar-count">3</span><?php endif; ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endforeach; ?>
+    </nav>
+    <div class="sidebar-footer">
+        <a class="sidebar-link<?= $activeAdmin === 'profile' ? ' active' : '' ?>" href="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>pages/profile/index.php"><i class="bi bi-person-circle"></i><span>Profile</span></a>
+        <form action="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>actions/auth/logout.php" method="post">
+            <input type="hidden" name="csrf_token" value="<?= function_exists('csrfToken') ? htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') : '' ?>">
+            <button class="sidebar-link sidebar-logout" type="submit"><i class="bi bi-box-arrow-left"></i><span>Logout</span></button>
+        </form>
+        <div class="system-status"><span class="status-pulse" aria-hidden="true"></span><span><strong>System operational</strong><small>Last sync: just now</small></span></div>
+    </div>
+</aside>
+<div class="sidebar-backdrop" aria-hidden="true"></div>

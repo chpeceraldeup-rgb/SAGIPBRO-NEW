@@ -19,10 +19,31 @@ function isLoggedIn()
     return isset($_SESSION['user_id']);
 }
 
+function appUrl(string $path = ''): string
+{
+    $configuredBase = trim((string) getenv('SAGIPBRO_BASE_URL'));
+    if ($configuredBase !== '') {
+        return rtrim($configuredBase, '/') . '/' . ltrim($path, '/');
+    }
+
+    $projectRoot = realpath(__DIR__ . '/..');
+    $documentRoot = isset($_SERVER['DOCUMENT_ROOT']) ? realpath((string) $_SERVER['DOCUMENT_ROOT']) : false;
+    $base = '';
+    if ($projectRoot && $documentRoot) {
+        $project = str_replace('\\', '/', $projectRoot);
+        $document = rtrim(str_replace('\\', '/', $documentRoot), '/');
+        if (str_starts_with(strtolower($project), strtolower($document))) {
+            $base = substr($project, strlen($document));
+        }
+    }
+
+    return '/' . trim($base . '/' . ltrim($path, '/'), '/');
+}
+
 function requireLogin()
 {
     if (!isLoggedIn()) {
-        header("Location: /sagipbro/login.php");
+        header('Location: ' . appUrl('login.php'));
         exit;
     }
 }
@@ -32,7 +53,7 @@ function requireRole($roles)
     requireLogin();
 
     if (!in_array($_SESSION['role'], (array) $roles, true)) {
-        header("Location: /sagipbro/index.php");
+        header('Location: ' . appUrl('index.php'));
         exit;
     }
 }
