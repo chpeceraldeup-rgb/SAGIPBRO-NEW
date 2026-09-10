@@ -2,9 +2,17 @@
 
 require_once "../../config/database.php";
 
-$full_name = "SAGIPBRO Administrator";
-$username = "christian";
-$password = "ceralde";
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit("Run this setup script from the command line.");
+}
+
+$full_name = getenv('SAGIPBRO_ADMIN_NAME') ?: 'SAGIPBRO Administrator';
+$username = getenv('SAGIPBRO_ADMIN_USERNAME');
+$password = getenv('SAGIPBRO_ADMIN_PASSWORD');
+if (!$username || !$password || strlen($password) < 8) {
+    exit("Set SAGIPBRO_ADMIN_USERNAME and an 8-character SAGIPBRO_ADMIN_PASSWORD first.\n");
+}
 
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
