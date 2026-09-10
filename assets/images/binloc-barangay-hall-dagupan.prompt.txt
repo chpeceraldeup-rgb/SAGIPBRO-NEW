@@ -1,0 +1,6 @@
+Method: built-in image_gen image editing.
+Source asset: assets/images/binloc-barangay-hall.png
+Saved asset: assets/images/binloc-barangay-hall-dagupan.png
+
+Final prompt:
+Use case: text-localization. Asset type: existing SAGIPBRO About-page photograph. Input image 1 is the edit target. Replace only the small facade lettering "CITY OF LA UNION" below "BONUAN BINLOC BARANGAY HALL" with the exact text "CITY OF DAGUPAN" (D-A-G-U-P-A-N). Match the original raised white uppercase letters, size, position, perspective, spacing, light and cast shadows. Preserve the full photograph, original landscape framing and aspect ratio, building, main heading, seal, people, vehicles, decorations, wires, colors and lighting. Change only the city-name lettering. Output just the edited full photograph, no webpage frame, captions, borders or extra text.

@@ -126,3 +126,37 @@ function publicEmpty(string $title, string $message): void
 {
     echo '<div class="empty-state surface-card"><i class="bi bi-inbox" aria-hidden="true"></i><h2>' . publicEscape($title) . '</h2><p>' . publicEscape($message) . '</p></div>';
 }
+
+function publicFilterForm(string $action, array $filters, array $statuses, ?array $categories = null, string $statusField = 'status'): void
+{
+    ?>
+    <form class="filter-panel no-print" action="<?= publicEscape($action) ?>" method="get" role="search" aria-label="Search and filter records">
+        <div class="filter-search">
+            <label for="directory-search">Search</label>
+            <input class="form-control" id="directory-search" name="q" type="search" maxlength="200" value="<?= publicEscape($filters['q'] ?? '') ?>" placeholder="Search names, locations or details">
+        </div>
+        <?php if ($categories !== null): ?>
+            <div class="filter-field">
+                <label for="directory-category">Category</label>
+                <select class="form-select" id="directory-category" name="category">
+                    <option value="">All categories</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= publicEscape($category) ?>" <?= ($filters['category'] ?? '') === $category ? 'selected' : '' ?>><?= publicEscape($category) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        <?php endif; ?>
+        <div class="filter-field">
+            <label for="directory-status"><?= $statusField === 'priority' ? 'Priority' : 'Status' ?></label>
+            <select class="form-select" id="directory-status" name="<?= publicEscape($statusField) ?>">
+                <option value="">All <?= $statusField === 'priority' ? 'priorities' : 'statuses' ?></option>
+                <?php foreach ($statuses as $status): ?>
+                    <option value="<?= publicEscape($status) ?>" <?= ($filters[$statusField] ?? '') === $status ? 'selected' : '' ?>><?= publicEscape($status) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <button class="btn btn-brand" type="submit"><i class="bi bi-search" aria-hidden="true"></i> Apply filters</button>
+        <a class="btn btn-outline-brand" href="<?= publicEscape($action) ?>">Clear filters</a>
+    </form>
+    <?php
+}

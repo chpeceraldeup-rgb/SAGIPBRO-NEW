@@ -114,32 +114,6 @@ require __DIR__ . '/includes/navbar.php';
         </div>
     </section>
 
-    <section class="trust-strip" aria-label="SAGIPBRO benefits">
-        <div class="container">
-            <div class="trust-grid">
-                <div class="trust-item"><i class="bi bi-database-check" aria-hidden="true"></i><span><strong>Organized records</strong><small>One source of operational data</small></span></div>
-                <div class="trust-item"><i class="bi bi-shield-lock" aria-hidden="true"></i><span><strong>Role-based access</strong><small>Protected staff information</small></span></div>
-                <div class="trust-item"><i class="bi bi-universal-access" aria-hidden="true"></i><span><strong>Easy to use</strong><small>Readable on every device</small></span></div>
-                <div class="trust-item"><i class="bi bi-people" aria-hidden="true"></i><span><strong>Community first</strong><small>Built for residents and responders</small></span></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-space" aria-labelledby="process-title">
-        <div class="container">
-            <div class="section-heading text-center">
-                <span class="section-kicker">Coordinated response</span>
-                <h2 id="process-title">From supply to family support</h2>
-                <p>SAGIPBRO gives barangay officials a consistent way to prepare, respond, and report.</p>
-            </div>
-            <div class="process-grid">
-                <article class="process-step"><h3>Record and monitor</h3><p>Relief stocks, center availability, residents, and volunteers are organized in one secure workspace.</p></article>
-                <article class="process-step"><h3>Coordinate and distribute</h3><p>Teams can plan distributions, record recipients, and keep quantities accountable during operations.</p></article>
-                <article class="process-step"><h3>Inform and improve</h3><p>Verified notices keep residents informed while reports help officials plan the next response.</p></article>
-            </div>
-        </div>
-    </section>
-
     <section class="pb-5" aria-labelledby="prepared-title">
         <div class="container">
             <div class="cta-panel">

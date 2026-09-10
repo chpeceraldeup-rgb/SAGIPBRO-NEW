@@ -66,9 +66,12 @@ The public directories are read-only. Maintain the selected MySQL database throu
 
 ```powershell
 & 'C:\xampp\php\php.exe' tests/public_services_integration.php
+& 'C:\xampp\php\php.exe' tests/public_services_http.php
 ```
 
 Tests create and remove a uniquely named `sagipbro_test_*` database; they never select or overwrite your application database. Run on a healthy local test MySQL server with CREATE/DROP DATABASE permissions. Set `SAGIPBRO_DB_PORT` to use an isolated test server. The suite covers both schemas, repeat migrations, empty states, status boundaries, literal searches, SQL injection input, publication rules, anonymous totals, and report counts.
+
+The HTTP suite also starts its own temporary PHP server on loopback port 18080 and checks public navigation, real database updates on reload, search forms, escaped content, CSV downloads, and unavailable-database responses. The port must be free. Both suites passed (100 database assertions and 301 HTTP assertions); layouts were checked at 320, 390, 768, and 1440 pixels.
 
 ## Remaining UI previews
 
