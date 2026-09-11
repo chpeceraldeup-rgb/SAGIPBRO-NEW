@@ -10,7 +10,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 <main class="auth-main register-main" id="main-content">
     <section class="auth-visual" aria-label="SAGIPBRO account security">
-        <a class="auth-brand brand-lockup" href="index.php"><img src="assets/images/sagipbro-mark.svg" alt="" width="49" height="55"><span><strong>SAGIPBRO</strong><small>Disaster relief information system</small></span></a>
+        <a class="auth-brand brand-lockup" href="index.php"><img src="assets/images/sagipbro-mark.svg" alt="" width="49" height="55"><span><strong>SAGIPBRO</strong><small>DISASTER RELIEF INFORMATION SYSTEM</small></span></a>
         <div class="auth-visual-copy"><span class="auth-chip"><i class="bi bi-person-check"></i> Account setup</span><h1>Join a coordinated community response.</h1><p>Create a secure account for access appropriate to your assigned barangay role.</p></div>
         <div class="auth-visual-status"><i class="bi bi-lock-fill" aria-hidden="true"></i><span><strong>Protected access</strong><small>Your credentials are securely processed</small></span></div>
     </section>

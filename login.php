@@ -21,7 +21,7 @@ require __DIR__ . '/includes/header.php';
     <section class="auth-visual" aria-label="SAGIPBRO welcome">
         <a class="auth-brand brand-lockup" href="index.php" aria-label="SAGIPBRO home">
             <img src="assets/images/sagipbro-mark.svg" alt="" width="49" height="55">
-            <span><strong>SAGIPBRO</strong><small>Disaster relief information system</small></span>
+            <span><strong>SAGIPBRO</strong><small>DISASTER RELIEF INFORMATION SYSTEM</small></span>
         </a>
         <div class="auth-visual-copy">
             <span class="auth-chip"><i class="bi bi-shield-check" aria-hidden="true"></i> Secure staff portal</span>

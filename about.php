@@ -71,27 +71,6 @@ include __DIR__ . '/includes/navbar.php';
         </div>
     </div>
 
-    <section class="section-space" aria-labelledby="disaster-preparedness-title">
-        <div class="container">
-            <div class="about-preparedness-panel">
-                <div class="row g-3 g-lg-4 align-items-center">
-                    <div class="col-lg-5">
-                        <span class="section-kicker">Ready before it matters</span>
-                        <h2 id="disaster-preparedness-title">Disaster Preparedness</h2>
-                        <p>Preparing ahead gives families time to understand their options and find the right information. It also helps the barangay coordinate assistance when a disaster affects the community.</p>
-                    </div>
-                    <div class="col-lg-7">
-                        <ul class="about-preparedness-list">
-                            <li><i class="bi bi-megaphone" aria-hidden="true"></i><div><h3>Stay informed</h3><p>Read current barangay announcements and follow instructions from local authorities.</p></div></li>
-                            <li><i class="bi bi-buildings" aria-hidden="true"></i><div><h3>Know where to get help</h3><p>Review evacuation-center locations and keep barangay contact details within reach.</p></div></li>
-                            <li><i class="bi bi-chat-heart" aria-hidden="true"></i><div><h3>Talk with your household</h3><p>Discuss how to stay in contact and consider who may need extra help during an emergency.</p></div></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="section-space section-soft" aria-labelledby="why-sagipbro-title">
         <div class="container">
             <div class="section-heading">

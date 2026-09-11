@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'SAGIPBRO';
-$pageDescription = 'Official disaster relief resource information for Bonuan Binloc, Dagupan City—relief supplies, evacuation centers, distributions, and emergency updates.';
+$pageDescription = 'Official Disaster Relief Resource Information for Bonuan Binloc, Dagupan City—relief supplies, evacuation centers, distributions, and emergency updates.';
 $activePage = 'home';
 $basePath = '';
 require_once __DIR__ . '/includes/public_service_helpers.php';

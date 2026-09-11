@@ -58,7 +58,7 @@ if ($isAdmin):
     <div class="container">
         <a class="navbar-brand brand-lockup" href="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>index.php" aria-label="SAGIPBRO home">
             <img src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/images/sagipbro-mark.svg" alt="" width="42" height="48">
-            <span><strong>SAGIPBRO</strong><small>Disaster relief information system</small></span>
+            <span><strong>SAGIPBRO</strong><small>DISASTER RELIEF INFORMATION SYSTEM</small></span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavigation" aria-controls="publicNavigation" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
