@@ -4,9 +4,9 @@ require_once __DIR__ . '/bootstrap.php';
 requireApiLogin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-	$stmt = $conn->query("SELECT e.*, GREATEST(e.capacity - e.occupants, 0) AS available_capacity,
-		CASE WHEN e.status = 'Closed' THEN 'Closed' WHEN e.occupants >= e.capacity THEN 'Full' ELSE 'Open' END AS availability
-		FROM evacuation_centers e ORDER BY e.name");
+	$stmt = $conn->query("SELECT e.*, e.center_name AS name, e.current_occupants AS occupants, GREATEST(e.capacity - e.current_occupants, 0) AS available_capacity,
+		CASE WHEN e.status = 'Closed' THEN 'Closed' WHEN e.current_occupants >= e.capacity THEN 'Full' ELSE 'Open' END AS availability
+		FROM evacuation_centers e ORDER BY e.center_name");
 	jsonResponse(['data' => $stmt->fetchAll()]);
 }
 
@@ -18,16 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$contact = $data['contact_no'] ?? null;
 	$conn->beginTransaction();
 	try {
-		$centerStmt = $conn->prepare("SELECT capacity, occupants FROM evacuation_centers WHERE id = ? AND status = 'Open' FOR UPDATE");
+		$centerStmt = $conn->prepare("SELECT capacity, current_occupants AS occupants FROM evacuation_centers WHERE id = ? AND status = 'Open' FOR UPDATE");
 		$centerStmt->execute([$centerId]);
 		$center = $centerStmt->fetch();
 		if (!$center || (int) $center['occupants'] >= (int) $center['capacity']) {
 			throw new RuntimeException('Evacuation center is closed or full.');
 		}
 		$residentId = !empty($data['resident_id']) ? positiveInt($data, 'resident_id') : null;
-		$stmt = $conn->prepare('INSERT INTO evacuees (resident_id, center_id, name, contact_no) VALUES (?, ?, ?, ?)');
-		$stmt->execute([$residentId, $centerId, $name, $contact]);
-		$conn->prepare('UPDATE evacuation_centers SET occupants = occupants + 1 WHERE id = ?')->execute([$centerId]);
+		$stmt = $conn->prepare('INSERT INTO evacuees (resident_id, evacuation_center_id, check_in, status, remarks) VALUES (?, ?, NOW(), \'Evacuated\', ?)');
+		$stmt->execute([$residentId, $centerId, $name . ($contact ? ' / ' . $contact : '')]);
+		$conn->prepare('UPDATE evacuation_centers SET current_occupants = current_occupants + 1 WHERE id = ?')->execute([$centerId]);
 		$id = (int) $conn->lastInsertId();
 		logActivity($conn, 'check-in', 'evacuee', $id, ['center_id' => $centerId]);
 		$conn->commit();
@@ -43,15 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 	$id = positiveInt($data, 'id');
 	$conn->beginTransaction();
 	try {
-		$stmt = $conn->prepare('UPDATE evacuees SET checked_out_at = NOW() WHERE id = ? AND checked_out_at IS NULL');
+		$stmt = $conn->prepare("UPDATE evacuees SET check_out = NOW(), status = 'Returned' WHERE id = ? AND check_out IS NULL");
 		$stmt->execute([$id]);
 		if (!$stmt->rowCount()) {
 			throw new RuntimeException('Active evacuee record not found.');
 		}
-		$centerStmt = $conn->prepare('SELECT center_id FROM evacuees WHERE id = ?');
+		$centerStmt = $conn->prepare('SELECT evacuation_center_id FROM evacuees WHERE id = ?');
 		$centerStmt->execute([$id]);
 		$centerId = (int) $centerStmt->fetchColumn();
-		$conn->prepare('UPDATE evacuation_centers SET occupants = GREATEST(occupants - 1, 0) WHERE id = ?')->execute([$centerId]);
+		$conn->prepare('UPDATE evacuation_centers SET current_occupants = GREATEST(current_occupants - 1, 0) WHERE id = ?')->execute([$centerId]);
 		logActivity($conn, 'check-out', 'evacuee', $id);
 		$conn->commit();
 		jsonResponse(['message' => 'Evacuee checked out.']);

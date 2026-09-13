@@ -5,6 +5,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../config/session.php';
 
+$conn = sagipbroDatabase();
+
 header('Content-Type: application/json; charset=utf-8');
 
 function jsonResponse($data, int $status = 200): void

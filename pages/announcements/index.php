@@ -57,7 +57,7 @@ include '../../includes/header.php';
             <section class="data-card" aria-labelledby="announcementRegisterHeading">
                 <div class="data-card-header">
                     <div><h2 id="announcementRegisterHeading">Community announcement register</h2><p>Published notices appear on the public information feed.</p></div>
-                    <span class="status-badge status-info">4 currently published</span>
+                    <span class="status-badge status-info" data-announcement-published>0 currently published</span>
                 </div>
                 <div class="table-responsive">
                     <table class="table app-table align-middle" id="announcementsTable" data-table>
@@ -81,11 +81,11 @@ include '../../includes/header.php';
                         </tbody>
                     </table>
                 </div>
-                <div class="data-card-footer record-summary"><span>Showing 1–<?= count($announcements) ?> of 21 announcements</span><nav aria-label="Announcement pagination"><ul class="pagination pagination-sm"><li class="page-item disabled"><button class="page-link" type="button" aria-label="Previous page"><i class="bi bi-chevron-left"></i></button></li><li class="page-item active" aria-current="page"><button class="page-link" type="button">1</button></li><li class="page-item"><button class="page-link" type="button">2</button></li><li class="page-item"><button class="page-link" type="button">3</button></li><li class="page-item"><button class="page-link" type="button" aria-label="Next page"><i class="bi bi-chevron-right"></i></button></li></ul></nav></div>
+                <div class="data-card-footer record-summary"><span data-announcement-summary>Showing 0 of 0 announcements</span><nav aria-label="Announcement pagination"><ul class="pagination pagination-sm"><li class="page-item disabled"><button class="page-link" type="button" aria-label="Previous page"><i class="bi bi-chevron-left"></i></button></li><li class="page-item active" aria-current="page"><button class="page-link" type="button">1</button></li><li class="page-item"><button class="page-link" type="button" aria-label="Next page"><i class="bi bi-chevron-right"></i></button></li></ul></nav></div>
             </section>
 
             <div class="modal fade" id="addAnnouncementModal" tabindex="-1" aria-labelledby="addAnnouncementTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Announcement saved in this preview.">
+                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form id="addAnnouncementForm">
                     <div class="modal-header"><h2 class="modal-title" id="addAnnouncementTitle">Create announcement</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="modal-intro">Use plain language, state the affected area, and include only confirmed instructions.</p><div class="row g-3">
                         <div class="col-12"><label class="form-label" for="addAnnouncementHeading">Title</label><input class="form-control" id="addAnnouncementHeading" name="title" maxlength="180" placeholder="Clear and specific announcement title" required></div>
@@ -109,7 +109,7 @@ include '../../includes/header.php';
             </div>
 
             <div class="modal fade" id="editAnnouncementModal" tabindex="-1" aria-labelledby="editAnnouncementTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Announcement changes saved in this preview.">
+                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form id="editAnnouncementForm">
                     <div class="modal-header"><h2 class="modal-title" id="editAnnouncementTitle">Edit announcement</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="modal-intro">Editing a published announcement will create a new activity-log entry.</p><div class="row g-3">
                         <div class="col-12"><label class="form-label" for="editAnnouncementHeading">Title</label><input class="form-control" id="editAnnouncementHeading" name="title" value="Orange Rainfall Warning: Stay Alert" maxlength="180" required></div>
@@ -125,7 +125,7 @@ include '../../includes/header.php';
             </div>
 
             <div class="modal fade" id="deleteAnnouncementModal" tabindex="-1" aria-labelledby="deleteAnnouncementTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Announcement archived in this preview.">
+                <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form id="deleteAnnouncementForm">
                     <div class="modal-header"><h2 class="modal-title" id="deleteAnnouncementTitle">Archive announcement?</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="mb-2">Archive <strong>Orange Rainfall Warning: Stay Alert</strong>?</p><p class="small text-muted mb-0">It will be removed from the public feed but retained in the announcement register and activity log.</p></div>
                     <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Keep published</button><button class="btn btn-danger" type="submit" data-confirm-action="Announcement archived."><i class="bi bi-archive"></i> Archive</button></div>
@@ -143,4 +143,11 @@ include '../../includes/header.php';
     </div>
 </div>
 
+<script>
+    window.sagipbroAnnouncementApi = {
+        endpoint: <?= json_encode(appUrl('api/announcements.php')) ?>,
+        csrfToken: <?= json_encode(csrfToken()) ?>
+    };
+</script>
+<script src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/js/announcements-api.js"></script>
 <?php include '../../includes/footer.php'; ?>

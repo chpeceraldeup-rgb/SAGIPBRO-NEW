@@ -4,7 +4,11 @@ require_once __DIR__ . '/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	requireApiLogin();
-	$stmt = $conn->query('SELECT a.*, u.full_name AS author FROM announcements a JOIN users u ON u.id = a.created_by ORDER BY a.created_at DESC');
+	$stmt = $conn->query("SELECT a.id, a.title, a.message AS body, a.message AS content,
+		a.disaster_type AS category, 'All residents' AS audience, a.status,
+		a.posted_by AS created_by, u.full_name AS author, a.created_at,
+		COALESCE(a.updated_at, a.created_at) AS updated_at
+		FROM announcements a JOIN users u ON u.id = a.posted_by ORDER BY a.created_at DESC");
 	jsonResponse(['data' => $stmt->fetchAll()]);
 }
 
@@ -15,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$title = requiredString($data, 'title', 180);
 	$body = requiredString($data, 'body', 10000);
 	$status = in_array($data['status'] ?? 'Draft', ['Draft', 'Published'], true) ? $data['status'] : 'Draft';
-	$publishedAt = $status === 'Published' ? date('Y-m-d H:i:s') : null;
-	$stmt = $conn->prepare('INSERT INTO announcements (title, body, status, created_by, published_at) VALUES (?, ?, ?, ?, ?)');
-	$stmt->execute([$title, $body, $status, currentUserId(), $publishedAt]);
+	$category = requiredString($data, 'category', 100);
+	$stmt = $conn->prepare('INSERT INTO announcements (title, message, disaster_type, status, posted_by, priority) VALUES (?, ?, ?, ?, ?, ?)');
+	$stmt->execute([$title, $body, $category, $status, currentUserId(), 'Normal']);
 	$id = (int) $conn->lastInsertId();
 	logActivity($conn, $status === 'Published' ? 'publish' : 'create', 'announcement', $id);
 	jsonResponse(['id' => $id, 'message' => 'Announcement created.'], 201);
@@ -26,9 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $id = positiveInt($data, 'id');
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 	$title = requiredString($data, 'title', 180);
-	$body = requiredString($data, 'body', 10000);
-	$stmt = $conn->prepare('UPDATE announcements SET title = ?, body = ? WHERE id = ? AND status <> \'Archived\'');
-	$stmt->execute([$title, $body, $id]);
+		$body = requiredString($data, 'body', 10000);
+		$category = requiredString($data, 'category', 100);
+		$status = in_array($data['status'] ?? 'Draft', ['Draft', 'Published', 'Archived'], true) ? $data['status'] : 'Draft';
+		$stmt = $conn->prepare('UPDATE announcements SET title = ?, message = ?, disaster_type = ?, status = ? WHERE id = ? AND status <> \'Archived\'');
+		$stmt->execute([$title, $body, $category, $status, $id]);
 	if (!$stmt->rowCount()) {
 		jsonResponse(['error' => 'Announcement not found or archived.'], 404);
 	}

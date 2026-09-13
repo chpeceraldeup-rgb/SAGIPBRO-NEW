@@ -18,6 +18,7 @@ $sidebarGroups = [
     ],
     'Communication' => [
         ['announcements', 'Announcements', 'bi-megaphone-fill', 'pages/announcements/index.php'],
+        ['messages', 'Messages', 'bi-envelope-fill', 'pages/messages/index.php'],
         ['reports', 'Reports', 'bi-bar-chart-fill', 'pages/reports/index.php'],
     ],
     'Administration' => [

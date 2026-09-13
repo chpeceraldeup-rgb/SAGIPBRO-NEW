@@ -1,6 +1,49 @@
 <?php
 require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/database.php';
 requireRole(['admin', 'official']);
+
+$dashboardStats = [
+    'resources' => 0,
+    'low_stock' => 0,
+    'centers' => 0,
+    'open_centers' => 0,
+    'residents' => 0,
+    'volunteers' => 0,
+    'distributions' => 0,
+    'distributed_quantity' => 0,
+];
+$recentActivity = [];
+$lowStockItems = [];
+$recentAnnouncements = [];
+$distributionOverview = [];
+
+try {
+    $dashboardStats = $conn->query("SELECT
+        (SELECT COUNT(*) FROM resources WHERE status <> 'Inactive') AS resources,
+        (SELECT COUNT(*) FROM resources WHERE status <> 'Inactive' AND quantity <= minimum_stock) AS low_stock,
+        (SELECT COUNT(*) FROM evacuation_centers) AS centers,
+        (SELECT COUNT(*) FROM evacuation_centers WHERE status = 'Open') AS open_centers,
+        (SELECT COUNT(*) FROM residents WHERE status = 'Active') AS residents,
+        (SELECT COUNT(*) FROM users WHERE role = 'volunteer' AND status = 'Active') AS volunteers,
+        (SELECT COUNT(*) FROM distributions WHERE distribution_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)) AS distributions,
+        (SELECT COALESCE(SUM(quantity), 0) FROM distributions WHERE distribution_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)) AS distributed_quantity")->fetch();
+    $recentActivity = $conn->query("SELECT l.action, l.module, l.description, l.created_at, COALESCE(u.full_name, u.username, 'System') AS actor
+        FROM activity_logs l LEFT JOIN users u ON u.id = l.user_id ORDER BY l.created_at DESC LIMIT 5")->fetchAll();
+    $lowStockItems = $conn->query("SELECT resource_name, quantity, minimum_stock, unit FROM resources
+        WHERE status <> 'Inactive' AND quantity <= minimum_stock ORDER BY quantity ASC LIMIT 3")->fetchAll();
+    $recentAnnouncements = $conn->query("SELECT title, message, created_at FROM announcements
+        WHERE status = 'Published' ORDER BY created_at DESC LIMIT 3")->fetchAll();
+    $distributionOverview = $conn->query("SELECT r.resource_name, r.unit, SUM(d.quantity) AS quantity
+        FROM distributions d JOIN resources r ON r.id = d.resource_id
+        WHERE d.distribution_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        GROUP BY r.id, r.resource_name, r.unit ORDER BY quantity DESC LIMIT 4")->fetchAll();
+} catch (Throwable $e) {
+    error_log('Dashboard data unavailable (' . get_class($e) . ').');
+}
+
+$distributionQuantities = array_map(static fn(array $row): int => (int) $row['quantity'], $distributionOverview);
+$distributionMax = max(array_merge([1], $distributionQuantities));
 
 $pageTitle = 'Dashboard';
 $pageDescription = 'SAGIPBRO administration dashboard for Barangay Binloc disaster relief operations.';
@@ -30,33 +73,33 @@ require __DIR__ . '/../includes/header.php';
             <section class="stat-grid" aria-label="Key operational totals">
                 <article class="stat-card">
                     <div class="stat-card-top"><span class="stat-card-label">Total resources</span><span class="stat-card-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">2,846</strong>
-                    <span class="stat-meta"><span class="trend-up"><i class="bi bi-arrow-up-short"></i> 8.4%</span> from last month</span>
+                    <strong class="stat-value" data-dashboard-stat="resources"><?= (int) $dashboardStats['resources'] ?></strong>
+                    <span class="stat-meta">Live database records</span>
                 </article>
                 <article class="stat-card warning">
                     <div class="stat-card-top"><span class="stat-card-label">Low-stock items</span><span class="stat-card-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">6</strong>
-                    <span class="stat-meta"><span class="trend-down">2 critical</span> require action</span>
+                    <strong class="stat-value" data-dashboard-stat="low_stock"><?= (int) $dashboardStats['low_stock'] ?></strong>
+                    <span class="stat-meta">Items at or below threshold</span>
                 </article>
                 <article class="stat-card info">
                     <div class="stat-card-top"><span class="stat-card-label">Evacuation centers</span><span class="stat-card-icon"><i class="bi bi-buildings" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">4</strong>
-                    <span class="stat-meta"><span class="trend-up">3 open</span> · 1 on standby</span>
+                    <strong class="stat-value" data-dashboard-stat="centers"><?= (int) $dashboardStats['centers'] ?></strong>
+                    <span class="stat-meta"><span data-dashboard-stat="open_centers"><?= (int) $dashboardStats['open_centers'] ?></span> open</span>
                 </article>
                 <article class="stat-card">
                     <div class="stat-card-top"><span class="stat-card-label">Registered residents</span><span class="stat-card-icon"><i class="bi bi-people" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">11,326</strong>
-                    <span class="stat-meta"><span class="trend-up"><i class="bi bi-check2"></i> 91%</span> profiles reviewed</span>
+                    <strong class="stat-value" data-dashboard-stat="residents"><?= (int) $dashboardStats['residents'] ?></strong>
+                    <span class="stat-meta">Active database records</span>
                 </article>
                 <article class="stat-card info">
                     <div class="stat-card-top"><span class="stat-card-label">Active volunteers</span><span class="stat-card-icon"><i class="bi bi-person-hearts" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">68</strong>
-                    <span class="stat-meta"><span class="trend-up">42 available</span> for deployment</span>
+                    <strong class="stat-value" data-dashboard-stat="volunteers"><?= (int) $dashboardStats['volunteers'] ?></strong>
+                    <span class="stat-meta">Active volunteer accounts</span>
                 </article>
                 <article class="stat-card">
                     <div class="stat-card-top"><span class="stat-card-label">Recent distributions</span><span class="stat-card-icon"><i class="bi bi-truck" aria-hidden="true"></i></span></div>
-                    <strong class="stat-value">127</strong>
-                    <span class="stat-meta"><span class="trend-up">1,032 packs</span> this month</span>
+                    <strong class="stat-value" data-dashboard-stat="distributions"><?= (int) $dashboardStats['distributions'] ?></strong>
+                    <span class="stat-meta"><span data-dashboard-stat="distributed_quantity"><?= (int) $dashboardStats['distributed_quantity'] ?></span> items in the last 30 days</span>
                 </article>
             </section>
 
@@ -71,11 +114,16 @@ require __DIR__ . '/../includes/header.php';
                             <caption class="visually-hidden">Recent SAGIPBRO activity</caption>
                             <thead><tr><th scope="col">Activity</th><th scope="col">User</th><th scope="col">Module</th><th scope="col">Time</th></tr></thead>
                             <tbody>
-                                <tr><td><div class="activity-cell"><span class="activity-icon"><i class="bi bi-box-arrow-in-down"></i></span><span><span class="table-primary-text">Added 120 family food packs</span><span class="table-secondary-text">Stock receipt #RCV-0924</span></span></div></td><td>Joel Mendoza</td><td><span class="status-badge status-success">Resources</span></td><td><time datetime="2026-09-10T09:42">12 min ago</time></td></tr>
-                                <tr><td><div class="activity-cell"><span class="activity-icon info"><i class="bi bi-person-plus"></i></span><span><span class="table-primary-text">Registered 18 residents</span><span class="table-secondary-text">Purok 4 household intake</span></span></div></td><td>Maria Santos</td><td><span class="status-badge status-info">Residents</span></td><td><time datetime="2026-09-10T09:15">39 min ago</time></td></tr>
-                                <tr><td><div class="activity-cell"><span class="activity-icon warning"><i class="bi bi-truck"></i></span><span><span class="table-primary-text">Completed relief distribution</span><span class="table-secondary-text">54 households · Purok 2</span></span></div></td><td>Anna Flores</td><td><span class="status-badge status-warning">Distribution</span></td><td><time datetime="2026-09-10T08:36">1 hr ago</time></td></tr>
-                                <tr><td><div class="activity-cell"><span class="activity-icon"><i class="bi bi-megaphone"></i></span><span><span class="table-primary-text">Published preparedness advisory</span><span class="table-secondary-text">Visible on public website</span></span></div></td><td>Maria Santos</td><td><span class="status-badge status-success">Announcement</span></td><td><time datetime="2026-09-10T07:52">2 hrs ago</time></td></tr>
-                                <tr><td><div class="activity-cell"><span class="activity-icon info"><i class="bi bi-building-check"></i></span><span><span class="table-primary-text">Updated center occupancy</span><span class="table-secondary-text">Bonuan multipurpose facility</span></span></div></td><td>Carlo Reyes</td><td><span class="status-badge status-info">Evacuation</span></td><td><time datetime="2026-09-09T17:30">Yesterday</time></td></tr>
+                                <?php foreach ($recentActivity as $activity): ?>
+                                    <?php $module = ucfirst((string) $activity['module']); ?>
+                                    <tr>
+                                        <td><div class="activity-cell"><span class="activity-icon"><i class="bi bi-activity"></i></span><span><span class="table-primary-text"><?= htmlspecialchars(ucfirst((string) $activity['action']) . ' ' . strtolower($module), ENT_QUOTES, 'UTF-8') ?></span><span class="table-secondary-text">Database activity recorded</span></span></div></td>
+                                        <td><?= htmlspecialchars((string) $activity['actor'], ENT_QUOTES, 'UTF-8') ?></td>
+                                        <td><span class="status-badge status-info"><?= htmlspecialchars($module, ENT_QUOTES, 'UTF-8') ?></span></td>
+                                        <td><time datetime="<?= htmlspecialchars((string) $activity['created_at'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(date('M j, g:i A', strtotime((string) $activity['created_at'])), ENT_QUOTES, 'UTF-8') ?></time></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (!$recentActivity): ?><tr><td colspan="4" class="text-center text-body-secondary py-4">No activity records yet.</td></tr><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -83,12 +131,13 @@ require __DIR__ . '/../includes/header.php';
 
                 <div class="dashboard-stack">
                     <section class="data-card warning-card" aria-labelledby="stock-warning-title">
-                        <div class="data-card-header"><div><h2 id="stock-warning-title"><i class="bi bi-exclamation-triangle-fill me-1"></i> Low-stock warning</h2><p>6 items below their set threshold</p></div><a href="../pages/resources/index.php">Manage</a></div>
+                        <div class="data-card-header"><div><h2 id="stock-warning-title"><i class="bi bi-exclamation-triangle-fill me-1"></i> Low-stock warning</h2><p><?= (int) $dashboardStats['low_stock'] ?> items below their set threshold</p></div><a href="../pages/resources/index.php">Manage</a></div>
                         <div class="data-card-body">
                             <ul class="stock-warning-list">
-                                <li><span class="warning-icon"><i class="bi bi-capsule"></i></span><span><strong>First-aid kits</strong><small>Threshold: 20 kits</small></span><span class="stock-count">8 left</span></li>
-                                <li><span class="warning-icon"><i class="bi bi-bag-heart"></i></span><span><strong>Hygiene kits</strong><small>Threshold: 100 kits</small></span><span class="stock-count">74 left</span></li>
-                                <li><span class="warning-icon"><i class="bi bi-lightning-charge"></i></span><span><strong>Flashlights</strong><small>Threshold: 35 pieces</small></span><span class="stock-count">12 left</span></li>
+                                <?php foreach ($lowStockItems as $item): ?>
+                                    <li><span class="warning-icon"><i class="bi bi-exclamation-triangle"></i></span><span><strong><?= htmlspecialchars((string) $item['resource_name'], ENT_QUOTES, 'UTF-8') ?></strong><small>Threshold: <?= (int) $item['minimum_stock'] ?> <?= htmlspecialchars((string) $item['unit'], ENT_QUOTES, 'UTF-8') ?></small></span><span class="stock-count"><?= (int) $item['quantity'] ?> left</span></li>
+                                <?php endforeach; ?>
+                                <?php if (!$lowStockItems): ?><li class="text-body-secondary">No low-stock items.</li><?php endif; ?>
                             </ul>
                         </div>
                     </section>
@@ -97,9 +146,10 @@ require __DIR__ . '/../includes/header.php';
                         <div class="data-card-header"><div><h2 id="announcement-title">Recent announcements</h2><p>Public information updates</p></div><a href="../pages/announcements/index.php">View all</a></div>
                         <div class="data-card-body">
                             <ul class="announcement-list">
-                                <li class="announcement-item urgent"><h3>Coastal weather advisory</h3><p>Residents are advised to monitor official weather bulletins and avoid unnecessary shoreline activity.</p><time datetime="2026-09-10">Today · 7:52 AM</time></li>
-                                <li class="announcement-item"><h3>Go-bag preparedness reminder</h3><p>Review medicines, drinking water, flashlights, and important documents in your family emergency bag.</p><time datetime="2026-09-09">Yesterday · 3:20 PM</time></li>
-                                <li class="announcement-item"><h3>Volunteer orientation schedule</h3><p>New response volunteers are invited to the barangay hall briefing this Saturday.</p><time datetime="2026-09-08">Sep 8 · 11:05 AM</time></li>
+                                <?php foreach ($recentAnnouncements as $announcement): ?>
+                                    <li class="announcement-item"><h3><?= htmlspecialchars((string) $announcement['title'], ENT_QUOTES, 'UTF-8') ?></h3><p><?= htmlspecialchars((string) $announcement['message'], ENT_QUOTES, 'UTF-8') ?></p><time datetime="<?= htmlspecialchars((string) $announcement['created_at'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(date('M j, g:i A', strtotime((string) $announcement['created_at'])), ENT_QUOTES, 'UTF-8') ?></time></li>
+                                <?php endforeach; ?>
+                                <?php if (!$recentAnnouncements): ?><li class="text-body-secondary">No published announcements yet.</li><?php endif; ?>
                             </ul>
                         </div>
                     </section>
@@ -109,10 +159,10 @@ require __DIR__ . '/../includes/header.php';
             <section class="data-card" aria-labelledby="distribution-overview-title">
                 <div class="data-card-header"><div><h2 id="distribution-overview-title">Distribution overview</h2><p>Items released during the past 30 days</p></div><a href="../pages/reports/index.php">Open report <i class="bi bi-arrow-right"></i></a></div>
                 <div class="data-card-body distribution-bars">
-                    <div class="distribution-bar-row"><strong>Food packs</strong><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div><span>842 packs</span></div>
-                    <div class="distribution-bar-row"><strong>Drinking water</strong><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div><span>690 units</span></div>
-                    <div class="distribution-bar-row"><strong>Hygiene kits</strong><div class="bar-track"><div class="bar-fill" style="width:46%"></div></div><span>441 kits</span></div>
-                    <div class="distribution-bar-row"><strong>Sleeping mats</strong><div class="bar-track"><div class="bar-fill" style="width:31%"></div></div><span>296 pieces</span></div>
+                    <?php foreach ($distributionOverview as $distribution): ?>
+                        <div class="distribution-bar-row"><strong><?= htmlspecialchars((string) $distribution['resource_name'], ENT_QUOTES, 'UTF-8') ?></strong><div class="bar-track"><div class="bar-fill" style="width:<?= min(100, max(0, (int) round(((int) $distribution['quantity'] / $distributionMax) * 100))) ?>%"></div></div><span><?= (int) $distribution['quantity'] ?> <?= htmlspecialchars((string) $distribution['unit'], ENT_QUOTES, 'UTF-8') ?></span></div>
+                    <?php endforeach; ?>
+                    <?php if (!$distributionOverview): ?><p class="text-body-secondary mb-0">No distributions recorded in the last 30 days.</p><?php endif; ?>
                 </div>
             </section>
         </main>

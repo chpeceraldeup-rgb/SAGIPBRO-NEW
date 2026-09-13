@@ -3,6 +3,29 @@ $pageTitle = 'Contact';
 $pageDescription = 'Find Barangay Bonuan Binloc hall hotlines, email, and Dagupan City emergency coordination details, and preview the SAGIPBRO contact form.';
 $activePage = 'contact';
 $basePath = '';
+$contactMessageSent = false;
+$contactMessageError = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once __DIR__ . '/config/connection.php';
+    try {
+        $name = trim((string) ($_POST['name'] ?? ''));
+        $email = trim((string) ($_POST['email'] ?? ''));
+        $phone = trim((string) ($_POST['phone'] ?? ''));
+        $sitio = trim((string) ($_POST['sitio'] ?? ''));
+        $subject = trim((string) ($_POST['subject'] ?? ''));
+        $message = trim((string) ($_POST['message'] ?? ''));
+        if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $subject === '' || $message === '') {
+            throw new InvalidArgumentException('Please complete all required fields.');
+        }
+        $stmt = sagipbroDatabase()->prepare('INSERT INTO contact_messages (name, email, phone, sitio, subject, message) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$name, $email, $phone ?: null, $sitio ?: null, $subject, $message]);
+        $contactMessageSent = true;
+    } catch (Throwable $e) {
+        $contactMessageError = $e instanceof InvalidArgumentException ? $e->getMessage() : 'Message could not be sent. Please try again.';
+        error_log('Contact message failed (' . get_class($e) . ').');
+    }
+}
 
 include __DIR__ . '/includes/header.php';
 include __DIR__ . '/includes/navbar.php';
@@ -85,17 +108,17 @@ include __DIR__ . '/includes/navbar.php';
 
                 <div class="form-card">
                     <h2>Send a message</h2>
-                    <p>This form demonstrates the intended public contact experience for SAGIPBRO.</p>
+                    <p>Send a message to the barangay administration team.</p>
 
-                    <div class="alert alert-info app-alert" id="contactFormNotice" role="note">
+                    <div class="alert <?= $contactMessageSent ? 'alert-success' : ($contactMessageError ? 'alert-danger' : 'alert-info') ?> app-alert" id="contactFormNotice" role="status">
                         <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
                         <div>
-                            <strong>UI preview</strong>
-                            <span>This form does not transmit or store messages. Use the listed contact channels for real assistance.</span>
+                            <strong><?= $contactMessageSent ? 'Message sent' : ($contactMessageError ?: 'Send a message') ?></strong>
+                            <span><?= $contactMessageSent ? 'Your message was sent to the admin inbox.' : 'Messages are reviewed by authorized administrators.' ?></span>
                         </div>
                     </div>
 
-                    <form action="#" method="post" data-demo-form aria-describedby="contactFormNotice">
+                    <form action="contact.php" method="post" aria-describedby="contactFormNotice">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label" for="contactName">Full name <span class="required-mark" aria-hidden="true">*</span></label>
@@ -108,6 +131,10 @@ include __DIR__ . '/includes/navbar.php';
                             <div class="col-md-6">
                                 <label class="form-label" for="contactPhone">Contact number</label>
                                 <input class="form-control" id="contactPhone" name="phone" type="tel" autocomplete="tel" maxlength="30" inputmode="tel" placeholder="09XX XXX XXXX">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="contactSitio">Sitio</label>
+                                <input class="form-control" id="contactSitio" name="sitio" type="text" maxlength="100" placeholder="Enter your sitio">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="contactSubject">Subject <span class="required-mark" aria-hidden="true">*</span></label>

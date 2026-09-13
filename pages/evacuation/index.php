@@ -66,8 +66,6 @@ include '../../includes/header.php';
                     <select class="form-select" id="centerArea" data-filter-select="#centersTable" data-filter-field="area">
                         <option value="">All areas</option>
                         <option>Bonuan Binloc</option>
-                        <option>Bonuan Boquig</option>
-                        <option>Bonuan Gueset</option>
                     </select>
                 </div>
                 <span class="filter-results" aria-live="polite" data-filter-results><?= count($centers) ?> registered centers</span>
@@ -132,7 +130,7 @@ include '../../includes/header.php';
             </section>
 
             <div class="modal fade" id="addCenterModal" tabindex="-1" aria-labelledby="addCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Evacuation center added to this preview.">
+                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form id="addCenterForm">
                     <div class="modal-header"><h2 class="modal-title" id="addCenterTitle">Add evacuation center</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="modal-intro">Register a verified facility and its designated point of contact.</p><div class="row g-3">
                         <div class="col-md-8"><label class="form-label" for="addCenterName">Center name</label><input class="form-control" id="addCenterName" name="name" required></div>
@@ -157,7 +155,7 @@ include '../../includes/header.php';
             </div>
 
             <div class="modal fade" id="editCenterModal" tabindex="-1" aria-labelledby="editCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Evacuation center changes saved in this preview.">
+                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form id="editCenterForm">
                     <div class="modal-header"><h2 class="modal-title" id="editCenterTitle">Edit evacuation center</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="modal-intro">Update occupancy only after confirming the latest registration count.</p><div class="row g-3">
                         <div class="col-md-8"><label class="form-label" for="editCenterName">Center name</label><input class="form-control" id="editCenterName" name="name" value="One Bonuan Multi-Purpose Center" required></div>
@@ -173,7 +171,7 @@ include '../../includes/header.php';
             </div>
 
             <div class="modal fade" id="deleteCenterModal" tabindex="-1" aria-labelledby="deleteCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Evacuation center removed from this preview.">
+                <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form id="deleteCenterForm">
                     <div class="modal-header"><h2 class="modal-title" id="deleteCenterTitle">Remove evacuation center?</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="mb-2">Remove <strong>One Bonuan Multi-Purpose Center</strong> from the active directory?</p><div class="alert alert-warning small mb-0" role="alert"><i class="bi bi-exclamation-triangle me-1"></i> Centers with current occupants should be closed and cleared before removal.</div></div>
                     <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Keep center</button><button class="btn btn-danger" type="submit" data-confirm-action="Evacuation center removed."><i class="bi bi-trash3"></i> Remove center</button></div>
@@ -182,5 +180,10 @@ include '../../includes/header.php';
         </main>
     </div>
 </div>
+
+<script>
+    window.sagipbroCenterApi = { endpoint: <?= json_encode(appUrl('api/centers.php')) ?>, csrfToken: <?= json_encode(csrfToken()) ?> };
+</script>
+<script src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/js/centers-api.js"></script>
 
 <?php include '../../includes/footer.php'; ?>

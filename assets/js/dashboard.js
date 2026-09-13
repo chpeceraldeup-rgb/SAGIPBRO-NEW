@@ -141,4 +141,23 @@
         updateClock();
         window.setInterval(updateClock, 60000);
     }
+
+    const dashboardStats = document.querySelectorAll('[data-dashboard-stat]');
+    if (dashboardStats.length) {
+        const refreshDashboardStats = async () => {
+            try {
+                const response = await fetch('../api/reports.php?report=summary', { headers: { Accept: 'application/json' } });
+                if (!response.ok) return;
+                const result = await response.json();
+                const summary = result.data?.[0] || {};
+                dashboardStats.forEach((node) => {
+                    const key = node.dataset.dashboardStat;
+                    if (Object.prototype.hasOwnProperty.call(summary, key)) node.textContent = Number(summary[key] || 0).toLocaleString();
+                });
+            } catch (error) {
+                // Keep the last server-rendered values when the refresh is unavailable.
+            }
+        };
+        window.setInterval(refreshDashboardStats, 30000);
+    }
 })();

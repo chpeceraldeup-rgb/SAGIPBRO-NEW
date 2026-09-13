@@ -1,20 +1,25 @@
 <?php
 $pageTitle = 'Relief Resources';
-$pageDescription = 'Browse a sample presentation of relief-supply information for the SAGIPBRO public interface.';
+$pageDescription = 'Browse current relief-supply information for the SAGIPBRO public interface.';
 $activePage = 'resources';
 $basePath = '';
 
-$resources = [
-    ['name' => 'Family food packs', 'category' => 'Food', 'quantity' => 84, 'unit' => 'packs', 'status' => 'In stock', 'tone' => 'success', 'icon' => 'bi-basket2'],
-    ['name' => 'Rice', 'category' => 'Food', 'quantity' => 320, 'unit' => 'kilograms', 'status' => 'In stock', 'tone' => 'success', 'icon' => 'bi-bag-heart'],
-    ['name' => 'Bottled drinking water', 'category' => 'Water', 'quantity' => 180, 'unit' => 'bottles', 'status' => 'In stock', 'tone' => 'success', 'icon' => 'bi-droplet'],
-    ['name' => 'Hygiene kits', 'category' => 'Hygiene', 'quantity' => 28, 'unit' => 'kits', 'status' => 'Low stock', 'tone' => 'warning', 'icon' => 'bi-handbag'],
-    ['name' => 'Baby care kits', 'category' => 'Hygiene', 'quantity' => 12, 'unit' => 'kits', 'status' => 'Low stock', 'tone' => 'warning', 'icon' => 'bi-heart'],
-    ['name' => 'First-aid kits', 'category' => 'Medical', 'quantity' => 8, 'unit' => 'kits', 'status' => 'Low stock', 'tone' => 'warning', 'icon' => 'bi-bandaid'],
-    ['name' => 'Face masks', 'category' => 'Medical', 'quantity' => 600, 'unit' => 'pieces', 'status' => 'In stock', 'tone' => 'success', 'icon' => 'bi-shield-plus'],
-    ['name' => 'Sleeping mats', 'category' => 'Shelter', 'quantity' => 46, 'unit' => 'pieces', 'status' => 'In stock', 'tone' => 'success', 'icon' => 'bi-grid'],
-    ['name' => 'Blankets', 'category' => 'Shelter', 'quantity' => 0, 'unit' => 'pieces', 'status' => 'Out of stock', 'tone' => 'danger', 'icon' => 'bi-layers'],
-];
+require_once __DIR__ . '/includes/public_data.php';
+$resources = [];
+$resourceIcons = ['Food' => 'bi-basket2', 'Water' => 'bi-droplet', 'Hygiene' => 'bi-handbag', 'Medical' => 'bi-bandaid', 'Shelter' => 'bi-grid'];
+try {
+    $liveResources = publicResources(sagipbroDatabase())['rows'];
+    foreach ($liveResources as $resource) {
+        $status = $resource['availability'];
+        $resources[] = [
+            'name' => $resource['name'], 'category' => $resource['category'], 'quantity' => (int) $resource['stock'],
+            'unit' => $resource['unit'], 'status' => $status, 'tone' => $status === 'Available' ? 'success' : ($status === 'Low Stock' ? 'warning' : 'danger'),
+            'icon' => $resourceIcons[$resource['category']] ?? 'bi-box-seam'
+        ];
+    }
+} catch (Throwable $e) {
+    error_log('Public resources unavailable (' . get_class($e) . ').');
+}
 
 include __DIR__ . '/includes/header.php';
 include __DIR__ . '/includes/navbar.php';
@@ -30,28 +35,28 @@ include __DIR__ . '/includes/navbar.php';
             </nav>
             <span class="hero-chip"><span aria-hidden="true"></span> Relief supply directory</span>
             <h1 id="resources-page-title">Find resource information quickly.</h1>
-            <p>Search and filter the resource-card experience designed for SAGIPBRO. The quantities below are illustrative sample data, not live barangay inventory.</p>
+            <p>Search and filter current relief resources recorded by authorized barangay staff.</p>
         </div>
     </section>
 
     <section class="section-space section-soft" aria-labelledby="resource-directory-title">
         <div class="container">
             <div class="section-heading">
-                <span class="section-kicker">Sample snapshot</span>
+                <span class="section-kicker">Live inventory</span>
                 <h2 id="resource-directory-title">Relief supply overview</h2>
-                <p>Preview how public resource names, categories, quantities, units, and stock conditions are presented.</p>
+                <p>Current public resource names, categories, quantities, units, and stock conditions.</p>
             </div>
 
-            <div class="alert alert-warning app-alert mb-4" role="note">
+            <?php if (!$resources): ?><div class="alert alert-info app-alert mb-4" role="status">
                 <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
                 <div>
-                    <strong>Interface preview only</strong>
-                    <span>Sample snapshot dated 10 September 2026. Quantities are illustrative and do not represent current barangay stock.</span>
+                    <strong>No resources recorded yet</strong>
+                    <span>Authorized administrators can add current inventory from the admin Resources page.</span>
                 </div>
-                <span class="status-badge status-neutral">Sample data</span>
-            </div>
+                <span class="status-badge status-neutral">Empty</span>
+            </div><?php endif; ?>
 
-            <div class="filter-panel" role="search" aria-label="Filter sample relief resources">
+            <div class="filter-panel" role="search" aria-label="Filter relief resources">
                 <div class="filter-search">
                     <label for="resourceSearch">Search supplies</label>
                     <div class="input-icon">
@@ -70,7 +75,7 @@ include __DIR__ . '/includes/navbar.php';
                         <option value="shelter">Shelter</option>
                     </select>
                 </div>
-                <p class="mb-2 ms-auto small text-secondary" aria-live="polite"><strong data-resource-count><?= count($resources) ?></strong> sample resources shown</p>
+                <p class="mb-2 ms-auto small text-secondary" aria-live="polite"><strong data-resource-count><?= count($resources) ?></strong> resources shown</p>
             </div>
 
             <div class="public-resource-grid" id="resourceGrid">
@@ -91,7 +96,7 @@ include __DIR__ . '/includes/navbar.php';
                         </div>
                         <div class="resource-stock">
                             <div>
-                                <small>Sample available quantity</small>
+                                <small>Available quantity</small>
                                 <strong><?= number_format($resource['quantity']) ?></strong>
                             </div>
                             <small><?= htmlspecialchars($resource['unit'], ENT_QUOTES, 'UTF-8') ?></small>
@@ -102,7 +107,7 @@ include __DIR__ . '/includes/navbar.php';
 
             <div class="empty-state surface-card mt-3" data-resource-empty hidden aria-live="polite">
                 <i class="bi bi-search" aria-hidden="true"></i>
-                <h3>No sample resources match</h3>
+                <h3>No resources match</h3>
                 <p>Try another search term or choose a different category.</p>
             </div>
         </div>
