@@ -66,8 +66,6 @@ include '../../includes/header.php';
                     <select class="form-select" id="centerArea" data-filter-select="#centersTable" data-filter-field="area">
                         <option value="">All areas</option>
                         <option>Bonuan Binloc</option>
-                        <option>Bonuan Boquig</option>
-                        <option>Bonuan Gueset</option>
                     </select>
                 </div>
                 <span class="filter-results" aria-live="polite" data-filter-results><?= count($centers) ?> registered centers</span>

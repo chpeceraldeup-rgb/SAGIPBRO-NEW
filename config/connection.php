@@ -14,7 +14,7 @@ function sagipbroDatabase(): PDO
     };
     $host = $setting('SAGIPBRO_DB_HOST', '127.0.0.1');
     $port = $setting('SAGIPBRO_DB_PORT', '3306');
-    $database = $setting('SAGIPBRO_DB_NAME', 'sagipbro');
+    $database = $setting('SAGIPBRO_DB_NAME', 'sagipbro_db');
     if (!ctype_digit($port) || !preg_match('/\A[a-zA-Z0-9_]+\z/', $database) || strpbrk($host, ";\r\n") !== false) {
         throw new RuntimeException('Invalid database configuration.');
     }
