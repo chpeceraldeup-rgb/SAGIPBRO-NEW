@@ -1,13 +1,13 @@
 <?php
-$pageTitle = 'About SAGIPBRO';
-$pageDescription = 'Learn how SAGIPBRO supports clear, organized disaster-relief information for Barangay Bonuan Binloc, Dagupan City.';
+$pageTitle = 'About Barangay Binloc';
+$pageDescription = 'Get to know Barangay Binloc, Dagupan City, Pangasinan, and how SAGIPBRO supports community preparedness and disaster-relief information.';
 $activePage = 'about';
 $basePath = '';
 
 include __DIR__ . '/includes/header.php';
 include __DIR__ . '/includes/navbar.php';
 ?>
-<main id="main-content">
+<main id="main-content" class="about-page">
     <section class="page-hero about-hero" aria-labelledby="about-page-title">
         <div class="container">
             <nav aria-label="Breadcrumb">
@@ -16,121 +16,105 @@ include __DIR__ . '/includes/navbar.php';
                     <li class="breadcrumb-item active" aria-current="page">About</li>
                 </ol>
             </nav>
-            <span class="hero-chip"><span aria-hidden="true"></span> About the system</span>
-            <h1 id="about-page-title">Preparedness built around people and reliable information.</h1>
-            <p>SAGIPBRO gives Barangay Bonuan Binloc a clear, accessible place for disaster-relief resources, evacuation information, distributions, and community advisories.</p>
+            <span class="hero-chip"><span aria-hidden="true"></span> Our barangay, our community</span>
+            <h1 id="about-page-title">Barangay Binloc.<br>Prepared together.</h1>
+            <p>Serving Barangay Binloc, Dagupan City, Pangasinan with clear information about relief supplies, evacuation centers, and community advisories.</p>
         </div>
     </section>
 
-    <section class="section-space" aria-labelledby="community-profile-title">
+    <section class="section-space" aria-labelledby="about-barangay-title">
         <div class="container">
-            <div class="section-heading text-center">
-                <span class="section-kicker">Community profile</span>
-                <h2 id="community-profile-title">Designed for Bonuan Binloc</h2>
-                <p>The system is shaped around the information needs of an urban, coastal barangay in Dagupan City.</p>
-            </div>
-
-            <div class="stat-band" aria-label="Bonuan Binloc community facts">
-                <div class="public-stat">
-                    <strong>11,326</strong>
-                    <span>Population recorded in the 2024 POPCEN</span>
+            <div class="row g-3 g-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <span class="section-kicker">The community we serve</span>
+                    <h2 id="about-barangay-title">About Barangay Binloc</h2>
+                    <p class="mt-3">Barangay Binloc is a community in Dagupan City, Pangasinan. It is the community at the heart of SAGIPBRO and the focus of the system’s disaster-relief information.</p>
+                    <p>For residents and families, finding clear information matters before, during, and after a disaster. SAGIPBRO brings local relief and preparedness updates into one place that is easy to access.</p>
+                    <a class="btn btn-outline-brand mt-2" href="contact.php"><i class="bi bi-telephone" aria-hidden="true"></i> Contact the barangay</a>
                 </div>
-                <div class="public-stat">
-                    <strong>Urban</strong>
-                    <span>Barangay classification</span>
-                </div>
-                <div class="public-stat">
-                    <strong>Coastal</strong>
-                    <span>Community setting</span>
-                </div>
-                <div class="public-stat">
-                    <strong>0105518007</strong>
-                    <span>Philippine Standard Geographic Code</span>
+                <div class="col-lg-6">
+                    <figure class="about-community-photo">
+                        <img class="about-community-image" src="assets/images/binloc-barangay-hall-dagupan.png" alt="Bonuan Binloc Barangay Hall exterior with City of Dagupan signage" width="1672" height="941" loading="lazy" decoding="async">
+                        <figcaption>Bonuan Binloc Barangay Hall, City of Dagupan, Pangasinan</figcaption>
+                    </figure>
                 </div>
             </div>
-            <p class="mt-3 mb-0 text-center small text-secondary">Community facts: <a href="https://psa.gov.ph/classification/psgc/brgydetail/0105518007" target="_blank" rel="noopener noreferrer">Philippine Statistics Authority barangay profile <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></p>
         </div>
     </section>
 
-    <section class="section-space section-soft" aria-labelledby="mission-title">
+    <div class="section-space section-soft">
         <div class="container">
-            <div class="mission-panel">
-                <div class="mission-visual">
-                    <blockquote>
-                        “Clear information helps neighbors, volunteers, and officials make safer decisions together.”
-                        <small>SAGIPBRO community-first principle</small>
-                    </blockquote>
-                </div>
-                <div>
-                    <span class="section-kicker">Purpose and mission</span>
-                    <h2 id="mission-title">One dependable view of relief operations</h2>
-                    <p>SAGIPBRO is intended to organize essential disaster-relief information so it is easier to understand, update, and use during preparedness and response activities.</p>
-                    <p>Its mission is to support timely, transparent, and coordinated decisions while keeping public information readable for every member of the community.</p>
-                    <ul class="check-list">
-                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Present relief supply availability in a simple, consistent format.</span></li>
-                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Make evacuation-center information easier to locate and compare.</span></li>
-                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Support orderly documentation of relief distribution activities.</span></li>
-                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Share important advisories through a clear public information channel.</span></li>
-                    </ul>
-                </div>
+            <div class="row g-3">
+                <section class="col-lg-5" aria-labelledby="barangay-location-title">
+                    <div class="icon-card about-detail-card h-100">
+                        <div class="icon-box"><i class="bi bi-geo-alt" aria-hidden="true"></i></div>
+                        <h2 id="barangay-location-title">Location</h2>
+                        <p>Barangay Binloc, Dagupan City, Pangasinan</p>
+                        <dl class="about-location-details">
+                            <div><dt>Barangay</dt><dd>Binloc</dd></div>
+                            <div><dt>City</dt><dd>Dagupan City</dd></div>
+                            <div><dt>Province</dt><dd>Pangasinan</dd></div>
+                        </dl>
+                        <a href="evacuation-centers.php">Find local evacuation centers <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </section>
+                <section class="col-lg-7" aria-labelledby="our-community-title">
+                    <div class="icon-card about-detail-card h-100">
+                        <div class="icon-box"><i class="bi bi-people" aria-hidden="true"></i></div>
+                        <h2 id="our-community-title">Our Community</h2>
+                        <p>Residents, families, volunteers, and barangay personnel all have a part in community preparedness. Sharing reliable updates and looking out for one another can help people find assistance when it is needed.</p>
+                        <p class="mt-3">SAGIPBRO is designed around these everyday needs: knowing what supplies are available, where evacuation centers are located, and which announcements need attention.</p>
+                        <div class="about-community-note"><i class="bi bi-house-heart" aria-hidden="true"></i><span>A prepared community starts with informed households and neighbors who support one another.</span></div>
+                    </div>
+                </section>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section class="section-space" aria-labelledby="objectives-title">
+    <section class="section-space section-soft" aria-labelledby="why-sagipbro-title">
         <div class="container">
             <div class="section-heading">
-                <span class="section-kicker">System objectives</span>
-                <h2 id="objectives-title">Better visibility from preparedness to recovery</h2>
-                <p>Each part of SAGIPBRO is designed to make essential information easier to find and routine coordination easier to follow.</p>
+                <span class="section-kicker">Built for Barangay Binloc</span>
+                <h2 id="why-sagipbro-title">Why SAGIPBRO?</h2>
+                <p>SAGIPBRO — Disaster Relief Resource Information System — helps Barangay Binloc organize and share the information residents need for preparedness and relief assistance.</p>
             </div>
-
-            <div class="icon-card-grid">
-                <article class="icon-card">
-                    <div class="icon-box"><i class="bi bi-box-seam" aria-hidden="true"></i></div>
-                    <h3>Organize resources</h3>
-                    <p>Group supplies by category, quantity, unit, and stock condition for a clearer inventory view.</p>
-                </article>
-                <article class="icon-card">
-                    <div class="icon-box"><i class="bi bi-buildings" aria-hidden="true"></i></div>
-                    <h3>Clarify safe locations</h3>
-                    <p>Present evacuation-center location, capacity, occupancy, and availability in one place.</p>
-                </article>
-                <article class="icon-card">
-                    <div class="icon-box"><i class="bi bi-truck" aria-hidden="true"></i></div>
-                    <h3>Document distributions</h3>
-                    <p>Keep an understandable record of what was distributed, to whom, where, and when.</p>
-                </article>
-                <article class="icon-card">
-                    <div class="icon-box"><i class="bi bi-megaphone" aria-hidden="true"></i></div>
-                    <h3>Communicate clearly</h3>
-                    <p>Give urgent announcements and community notices a visible, readable home.</p>
-                </article>
-                <article class="icon-card">
-                    <div class="icon-box"><i class="bi bi-people" aria-hidden="true"></i></div>
-                    <h3>Support coordination</h3>
-                    <p>Help authorized officials and volunteers work from the same organized information.</p>
-                </article>
-                <article class="icon-card">
-                    <div class="icon-box"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></div>
-                    <h3>Improve reporting</h3>
-                    <p>Turn operational records into practical summaries for review and planning.</p>
-                </article>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <article class="icon-card about-service-card h-100">
+                        <div class="icon-box"><i class="bi bi-box-seam" aria-hidden="true"></i></div>
+                        <h3>Relief resources</h3>
+                        <p>See recorded supplies, quantities, and stock conditions so it is easier to understand what assistance may be available.</p>
+                        <a href="resources.php">View relief resources <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </article>
+                </div>
+                <div class="col-md-6">
+                    <article class="icon-card about-service-card h-100">
+                        <div class="icon-box"><i class="bi bi-buildings" aria-hidden="true"></i></div>
+                        <h3>Evacuation centers</h3>
+                        <p>Find center locations, capacity, current occupants, and available spaces in one place.</p>
+                        <a href="evacuation-centers.php">View evacuation centers <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </article>
+                </div>
+                <div class="col-md-6">
+                    <article class="icon-card about-service-card h-100">
+                        <div class="icon-box"><i class="bi bi-megaphone" aria-hidden="true"></i></div>
+                        <h3>Community announcements</h3>
+                        <p>Read published advisories and urgent notices to keep up with information that affects the barangay.</p>
+                        <a href="announcements.php">Read announcements <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </article>
+                </div>
+                <div class="col-md-6">
+                    <article class="icon-card about-service-card h-100">
+                        <div class="icon-box"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></div>
+                        <h3>Disaster and relief information</h3>
+                        <p>Review resource and evacuation summaries alongside recent relief distribution information to support local planning.</p>
+                        <a href="reports.php">View public information <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </article>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <section class="pb-5" aria-labelledby="about-cta-title">
-        <div class="container">
-            <div class="cta-panel">
-                <div>
-                    <h2 id="about-cta-title">Explore community relief information</h2>
-                    <p>Review the sample resource view or learn how each SAGIPBRO service supports preparedness and response.</p>
-                </div>
-                <div class="cta-actions">
-                    <a class="btn btn-white" href="resources.php"><i class="bi bi-box-seam" aria-hidden="true"></i> View resources</a>
-                    <a class="btn btn-ghost-light" href="services.php">Our services</a>
-                </div>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a class="btn btn-brand" href="services.php">Explore all services <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                <a class="btn btn-outline-brand" href="distributions.php">View distribution schedules</a>
             </div>
         </div>
     </section>

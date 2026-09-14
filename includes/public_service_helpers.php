@@ -78,7 +78,7 @@ function publicServiceHero(string $title, string $description, string $active): 
         'reports' => ['reports.php', 'Reports', 'bi-file-earmark-bar-graph'],
     ];
     ?>
-    <section class="page-hero public-service-hero" aria-labelledby="public-service-title">
+    <section class="page-hero public-service-hero<?= $active === 'resources' ? ' photo-hero resources-hero' : '' ?>" aria-labelledby="public-service-title">
         <div class="container">
             <nav aria-label="Breadcrumb"><ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>

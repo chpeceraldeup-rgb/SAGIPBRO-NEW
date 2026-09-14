@@ -45,7 +45,7 @@
                 <td><span class="status-badge ${statusClass}">${status}</span></td>
                 <td>${escapeHtml(resource.updated_at || resource.created_at || '')}</td>
                 <td class="text-end"><div class="table-actions" role="group" aria-label="Actions for ${escapeHtml(resource.name)}">
-                    <button class="btn btn-light btn-icon" type="button" title="View" data-record-json="${escapeHtml(JSON.stringify(resource))}" data-bs-toggle="modal" data-bs-target="#viewResourceModal"><i class="bi bi-eye"></i></button><button class="btn btn-light btn-icon" type="button" title="Edit" aria-label="Edit ${escapeHtml(resource.name)}" data-resource-edit="${resource.id}" data-bs-toggle="modal" data-bs-target="#editResourceModal"><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-light btn-icon" type="button" title="Edit" aria-label="Edit ${escapeHtml(resource.name)}" data-resource-edit="${resource.id}" data-bs-toggle="modal" data-bs-target="#editResourceModal"><i class="bi bi-pencil"></i></button>
                     <button class="btn btn-light btn-icon text-danger" type="button" title="Archive" aria-label="Archive ${escapeHtml(resource.name)}" data-resource-delete="${resource.id}" data-bs-toggle="modal" data-bs-target="#deleteResourceModal"><i class="bi bi-archive"></i></button>
                 </div></td>
             </tr>`;

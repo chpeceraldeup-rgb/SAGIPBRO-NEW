@@ -25,7 +25,7 @@ include __DIR__ . '/includes/header.php';
 include __DIR__ . '/includes/navbar.php';
 ?>
 <main id="main-content">
-    <section class="page-hero" aria-labelledby="resources-page-title">
+    <section class="page-hero photo-hero resources-hero" aria-labelledby="resources-page-title">
         <div class="container">
             <nav aria-label="Breadcrumb">
                 <ol class="breadcrumb">
