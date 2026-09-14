@@ -110,6 +110,33 @@ CREATE TABLE IF NOT EXISTS activity_logs (
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS volunteers (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	full_name VARCHAR(150) NOT NULL,
+	contact VARCHAR(30) NOT NULL,
+	email VARCHAR(150) NULL,
+	availability VARCHAR(80) NOT NULL,
+	skills VARCHAR(255) NOT NULL,
+	assignment VARCHAR(120) NULL,
+	notes TEXT NULL,
+	status ENUM('Active', 'Deployed', 'Inactive') NOT NULL DEFAULT 'Active',
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS contact_messages (
+	id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(120) NOT NULL,
+	email VARCHAR(160) NOT NULL,
+	phone VARCHAR(30) NULL,
+	sitio VARCHAR(100) NULL,
+	subject VARCHAR(80) NOT NULL,
+	message TEXT NOT NULL,
+	status ENUM('Unread', 'Read', 'Resolved') NOT NULL DEFAULT 'Unread',
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
 CREATE INDEX idx_residents_household ON residents(household_id);
 CREATE INDEX idx_evacuees_center_active ON evacuees(center_id, checked_out_at);
 CREATE INDEX idx_logs_created ON activity_logs(created_at);

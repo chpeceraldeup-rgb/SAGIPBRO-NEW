@@ -36,7 +36,7 @@ include '../../includes/header.php';
             <form class="filter-toolbar" action="index.php" method="get" data-demo-form data-toast-message="Report period applied.">
                 <div class="filter-field"><label for="reportDateFrom">From</label><input class="form-control" id="reportDateFrom" name="from" type="date" value="2026-09-01"></div>
                 <div class="filter-field"><label for="reportDateTo">To</label><input class="form-control" id="reportDateTo" name="to" type="date" value="2026-09-10"></div>
-                <div class="filter-field"><label for="reportArea">Coverage</label><select class="form-select" id="reportArea" name="coverage"><option>All Barangay Binloc</option><option>Purok 1</option><option>Purok 2</option><option>Purok 3</option><option>Purok 4</option><option>Purok 5</option><option>Purok 6</option></select></div>
+                <div class="filter-field"><label for="reportArea">Category</label><select class="form-select" id="reportArea" name="coverage"><option>All categories</option><option>Japan</option><option>China</option><option>America</option><option>Palatong</option><option>Bliss</option><option>Korea</option><option>Russia</option></select></div>
                 <button class="btn btn-brand" type="submit"><i class="bi bi-funnel" aria-hidden="true"></i> Apply period</button>
                 <span class="filter-results">Reporting period: Sep 1–10, 2026</span>
             </form>

@@ -75,7 +75,7 @@ include '../../includes/header.php';
 </div>
 
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
-    <form action="index.php" method="post" data-demo-form data-toast-message="User account created successfully.">
+    <form id="addUserForm">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
         <div class="modal-header"><div><h2 class="modal-title" id="addUserModalLabel">Add system user</h2><p class="mb-0 mt-1 small text-body-secondary">Create secure access for an authorized SAGIPBRO user.</p></div><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body"><div class="row g-3">
@@ -92,7 +92,7 @@ include '../../includes/header.php';
 </div></div></div>
 
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-    <form action="index.php" method="post" data-demo-form data-toast-message="User permissions updated.">
+    <form id="editUserForm">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
         <div class="modal-header"><h2 class="modal-title" id="editUserModalLabel">Edit user access</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body"><p class="modal-intro">Update the selected account's role and access status.</p><div class="mb-3"><label class="form-label" for="editUserFullName">Full name</label><input class="form-control" id="editUserFullName" name="full_name" value="Rogelio Cruz" required></div><div class="mb-3"><label class="form-label" for="editUserRole">Access role</label><select class="form-select" id="editUserRole" name="role"><option>Administrator</option><option selected>Barangay Official</option><option>Volunteer</option><option>Resident</option></select></div><div><label class="form-label" for="editUserStatus">Account status</label><select class="form-select" id="editUserStatus" name="status"><option selected>Active</option><option>Inactive</option></select></div></div>
@@ -101,7 +101,7 @@ include '../../includes/header.php';
 </div></div></div>
 
 <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-    <form action="index.php" method="post" data-demo-form data-toast-message="Temporary password issued securely.">
+    <form id="resetPasswordForm">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
         <div class="modal-header"><h2 class="modal-title" id="resetPasswordModalLabel">Reset user password</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body"><div class="info-callout mb-3"><i class="bi bi-shield-lock" aria-hidden="true"></i><div><strong>Secure reset</strong><span>The user will be required to replace this temporary password after signing in.</span></div></div><label class="form-label" for="temporaryPassword">Temporary password</label><input class="form-control" id="temporaryPassword" name="temporary_password" type="password" minlength="8" value="Binloc!2026" required autocomplete="new-password"></div>
@@ -110,11 +110,20 @@ include '../../includes/header.php';
 </div></div></div>
 
 <div class="modal fade" id="deactivateUserModal" tabindex="-1" aria-labelledby="deactivateUserModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-    <form action="index.php" method="post" data-demo-form data-toast-message="User account deactivated.">
+    <form id="deactivateUserForm">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
         <div class="modal-header"><h2 class="modal-title" id="deactivateUserModalLabel">Deactivate user account?</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body"><p class="mb-2">The selected user will no longer be able to sign in. Historical activity will remain available.</p><p class="small text-body-secondary mb-0">You can reactivate the account later from this page.</p></div>
         <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Keep active</button><button class="btn btn-danger" type="submit"><i class="bi bi-person-x" aria-hidden="true"></i> Deactivate account</button></div>
     </form>
 </div></div></div>
+
+<div class="modal fade" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h2 class="modal-title" id="viewUserModalLabel">User details</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"></div><div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button></div></div></div></div>
+<script>
+    window.sagipbroUserApi = {
+        endpoint: <?= json_encode(appUrl('api/users.php')) ?>,
+        csrfToken: <?= json_encode(csrfToken()) ?>
+    };
+</script>
+<script src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/js/users-api.js"></script>
 <?php include '../../includes/footer.php'; ?>

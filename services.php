@@ -80,6 +80,56 @@ include __DIR__ . '/includes/navbar.php';
         </div>
     </section>
 
+    <section class="section-space" aria-labelledby="service-process-title">
+        <div class="container">
+            <div class="section-heading text-center">
+                <span class="section-kicker">Information flow</span>
+                <h2 id="service-process-title">Simple by design</h2>
+                <p>The interface keeps the path from information entry to community understanding short and consistent.</p>
+            </div>
+            <div class="process-grid">
+                <article class="process-step">
+                    <h3>Record</h3>
+                    <p>Authorized users enter or update operational information using clear forms and familiar labels.</p>
+                </article>
+                <article class="process-step">
+                    <h3>Review</h3>
+                    <p>Search, filters, stock cues, and summaries make important conditions easier to notice.</p>
+                </article>
+                <article class="process-step">
+                    <h3>Communicate</h3>
+                    <p>Approved public information can be presented in an accessible format for community reference.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-space section-soft" aria-labelledby="service-principles-title">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-kicker">Service principles</span>
+                <h2 id="service-principles-title">Made to stay useful under pressure</h2>
+            </div>
+            <div class="icon-card-grid">
+                <article class="icon-card">
+                    <div class="icon-box"><i class="bi bi-eye" aria-hidden="true"></i></div>
+                    <h3>Readable</h3>
+                    <p>Plain language, strong contrast, and recognizable status labels reduce guesswork.</p>
+                </article>
+                <article class="icon-card">
+                    <div class="icon-box"><i class="bi bi-phone" aria-hidden="true"></i></div>
+                    <h3>Responsive</h3>
+                    <p>Information remains usable across desktop, tablet, and mobile screen sizes.</p>
+                </article>
+                <article class="icon-card">
+                    <div class="icon-box"><i class="bi bi-shield-check" aria-hidden="true"></i></div>
+                    <h3>Role-aware</h3>
+                    <p>Public views focus on community information while staff tools support authorized workflows.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
     <section class="pb-5" aria-labelledby="services-cta-title">
         <div class="container">
             <div class="cta-panel">

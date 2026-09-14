@@ -1,31 +1,42 @@
 <?php
-$pageTitle = 'Contact';
-$pageDescription = 'Find Barangay Bonuan Binloc hall hotlines, email, and Dagupan City emergency coordination details, and preview the SAGIPBRO contact form.';
-$activePage = 'contact';
-$basePath = '';
-$contactMessageSent = false;
-$contactMessageError = '';
-
+require_once __DIR__ . '/config/session.php';
+require_once __DIR__ . '/config/connection.php';
+$contactError = '';
+$contactSent = !empty($_SESSION['contact_sent']);
+unset($_SESSION['contact_sent']);
+$contactSitios = ['Japan', 'China', 'America', 'Palatong', 'Bliss', 'Korea', 'Russia'];
+$contactValues = array_fill_keys(['name', 'email', 'phone', 'sitio', 'message'], '');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once __DIR__ . '/config/connection.php';
-    try {
-        $name = trim((string) ($_POST['name'] ?? ''));
-        $email = trim((string) ($_POST['email'] ?? ''));
-        $phone = trim((string) ($_POST['phone'] ?? ''));
-        $sitio = trim((string) ($_POST['sitio'] ?? ''));
-        $subject = trim((string) ($_POST['subject'] ?? ''));
-        $message = trim((string) ($_POST['message'] ?? ''));
-        if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $subject === '' || $message === '') {
-            throw new InvalidArgumentException('Please complete all required fields.');
+    verifyCsrf();
+    foreach ($contactValues as $field => $value) {
+        $contactValues[$field] = is_string($_POST[$field] ?? null) ? trim($_POST[$field]) : '';
+    }
+    $limits = ['name' => 120, 'email' => 160, 'phone' => 30, 'sitio' => 100, 'message' => 1500];
+    foreach ($limits as $field => $limit) {
+        if (($field !== 'phone' && $contactValues[$field] === '') || mb_strlen($contactValues[$field]) > $limit) {
+            $contactError = 'Please complete the required fields within the allowed lengths.';
         }
-        $stmt = sagipbroDatabase()->prepare('INSERT INTO contact_messages (name, email, phone, sitio, subject, message) VALUES (?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$name, $email, $phone ?: null, $sitio ?: null, $subject, $message]);
-        $contactMessageSent = true;
-    } catch (Throwable $e) {
-        $contactMessageError = $e instanceof InvalidArgumentException ? $e->getMessage() : 'Message could not be sent. Please try again.';
-        error_log('Contact message failed (' . get_class($e) . ').');
+    }
+    if (!filter_var($contactValues['email'], FILTER_VALIDATE_EMAIL) || !in_array($contactValues['sitio'], $contactSitios, true)) {
+        $contactError = 'Please enter a valid email address and select a sitio.';
+    }
+    if ($contactError === '') {
+        try {
+            $statement = sagipbroDatabase()->prepare("INSERT INTO contact_messages (name, email, phone, sitio, message, subject) VALUES (?, ?, ?, ?, ?, 'General inquiry')");
+            $statement->execute(array_values($contactValues));
+            $_SESSION['contact_sent'] = true;
+            header('Location: contact.php#contactFormNotice');
+            exit;
+        } catch (Throwable $e) {
+            error_log('Contact submission failed (' . get_class($e) . ').');
+            $contactError = 'Your message could not be sent. Please try again or use the contact details listed here.';
+        }
     }
 }
+$pageTitle = 'Contact';
+$pageDescription = 'Find Barangay Bonuan Binloc contact details and send a message to SAGIPBRO administrators.';
+$activePage = 'contact';
+$basePath = '';
 
 include __DIR__ . '/includes/header.php';
 include __DIR__ . '/includes/navbar.php';
@@ -108,17 +119,18 @@ include __DIR__ . '/includes/navbar.php';
 
                 <div class="form-card">
                     <h2>Send a message</h2>
-                    <p>Send a message to the barangay administration team.</p>
+                    <p>Send your inquiry to the barangay administrators through their SAGIPBRO Messages inbox.</p>
 
-                    <div class="alert <?= $contactMessageSent ? 'alert-success' : ($contactMessageError ? 'alert-danger' : 'alert-info') ?> app-alert" id="contactFormNotice" role="status">
+                    <div class="alert alert-info app-alert" id="contactFormNotice" role="note">
                         <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
                         <div>
-                            <strong><?= $contactMessageSent ? 'Message sent' : ($contactMessageError ?: 'Send a message') ?></strong>
-                            <span><?= $contactMessageSent ? 'Your message was sent to the admin inbox.' : 'Messages are reviewed by authorized administrators.' ?></span>
+                            <strong><?= $contactSent ? 'Message sent' : ($contactError !== '' ? 'Message not sent' : 'Contact the barangay') ?></strong>
+                            <span><?= htmlspecialchars($contactSent ? 'Your message has been saved to the administrators’ Messages inbox.' : ($contactError ?: 'Complete the form below to send your inquiry. For immediate emergencies, call 911.'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
                     </div>
 
-                    <form action="contact.php" method="post" aria-describedby="contactFormNotice">
+                    <form action="contact.php#contactFormNotice" method="post" aria-describedby="contactFormNotice">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label" for="contactName">Full name <span class="required-mark" aria-hidden="true">*</span></label>
@@ -133,18 +145,12 @@ include __DIR__ . '/includes/navbar.php';
                                 <input class="form-control" id="contactPhone" name="phone" type="tel" autocomplete="tel" maxlength="30" inputmode="tel" placeholder="09XX XXX XXXX">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label" for="contactSitio">Sitio</label>
-                                <input class="form-control" id="contactSitio" name="sitio" type="text" maxlength="100" placeholder="Enter your sitio">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="contactSubject">Subject <span class="required-mark" aria-hidden="true">*</span></label>
-                                <select class="form-select" id="contactSubject" name="subject" required aria-required="true">
-                                    <option value="" selected disabled>Select a subject</option>
-                                    <option value="resource">Relief resource inquiry</option>
-                                    <option value="evacuation">Evacuation information</option>
-                                    <option value="distribution">Relief distribution</option>
-                                    <option value="announcement">Announcement clarification</option>
-                                    <option value="other">Other concern</option>
+                                <label class="form-label" for="contactSitio">Sitio <span class="required-mark" aria-hidden="true">*</span></label>
+                                <select class="form-select" id="contactSitio" name="sitio" required aria-required="true">
+                                    <option value="" <?= $contactValues['sitio'] === '' ? 'selected' : '' ?> disabled>Select a sitio</option>
+                                    <?php foreach ($contactSitios as $sitio): ?>
+                                    <option value="<?= htmlspecialchars($sitio, ENT_QUOTES, 'UTF-8') ?>" <?= $contactValues['sitio'] === $sitio ? 'selected' : '' ?>><?= htmlspecialchars($sitio, ENT_QUOTES, 'UTF-8') ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-12">
@@ -154,7 +160,7 @@ include __DIR__ . '/includes/navbar.php';
                             </div>
                             <div class="col-12 d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
                                 <small class="text-secondary"><span class="required-mark" aria-hidden="true">*</span> Required fields</small>
-                                <button class="btn btn-brand" type="submit"><i class="bi bi-send" aria-hidden="true"></i> Preview submission</button>
+                                <button class="btn btn-brand" type="submit"><i class="bi bi-send" aria-hidden="true"></i> Send message</button>
                             </div>
                         </div>
                     </form>
@@ -163,36 +169,5 @@ include __DIR__ . '/includes/navbar.php';
         </div>
     </section>
 
-    <section class="section-space" aria-labelledby="urgent-channels-title">
-        <div class="container">
-            <div class="section-heading text-center">
-                <span class="section-kicker">Choose a channel</span>
-                <h2 id="urgent-channels-title">When every minute matters</h2>
-                <p>Match the type of concern with the contact channel intended to handle it.</p>
-            </div>
-            <div class="hotline-grid">
-                <article class="hotline-card">
-                    <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
-                    <strong>Life-threatening emergency</strong>
-                    <a href="tel:911">Call 911</a>
-                </article>
-                <article class="hotline-card">
-                    <i class="bi bi-shield-check" aria-hidden="true"></i>
-                    <strong>Disaster coordination</strong>
-                    <a href="tel:+639684449598">CDRRMO: 0968-444-9598</a>
-                </article>
-                <article class="hotline-card">
-                    <i class="bi bi-telephone" aria-hidden="true"></i>
-                    <strong>City landline</strong>
-                    <a href="tel:+63755400363">(075) 540-0363</a>
-                </article>
-                <article class="hotline-card">
-                    <i class="bi bi-envelope" aria-hidden="true"></i>
-                    <strong>General city inquiry</strong>
-                    <a href="mailto:dagupanlgu@gmail.com">dagupanlgu@gmail.com</a>
-                </article>
-            </div>
-        </div>
-    </section>
 </main>
 <?php include __DIR__ . '/includes/footer.php'; ?>

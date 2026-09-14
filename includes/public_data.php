@@ -31,7 +31,9 @@ function publicSchema(PDO $db): array
         'center_name' => in_array('center_name', $tables['evacuation_centers'], true) ? 'center_name' : 'name',
         'center_address' => in_array('location', $tables['evacuation_centers'], true) ? 'location' : 'address',
         'occupants' => in_array('current_occupants', $tables['evacuation_centers'], true) ? 'current_occupants' : 'occupants',
-        'body' => in_array('content', $tables['announcements'], true) ? 'content' : 'body',
+        'body' => in_array('content', $tables['announcements'], true) ? 'content' : (in_array('message', $tables['announcements'], true) ? 'message' : 'body'),
+        'announcement_published_at' => in_array('published_at', $tables['announcements'], true) ? 'published_at' : 'created_at',
+        'announcement_expires_at' => in_array('expires_at', $tables['announcements'], true) ? 'expires_at' : null,
         'distribution_date_only' => in_array('distribution_date', $tables['distributions'], true),
         'distribution_date' => in_array('distribution_date', $tables['distributions'], true) ? 'distribution_date' : 'distributed_at',
         'distribution_location' => in_array('distribution_location', $tables['distributions'], true) ? 'distribution_location' : null,
@@ -118,7 +120,10 @@ function publicCenters(PDO $db, array $filters = []): array
 function publicAnnouncements(PDO $db, array $filters = []): array
 {
     $s = publicSchema($db);
-    $where = ["LOWER(status) = 'published'", 'published_at IS NOT NULL', 'published_at <= NOW()', '(expires_at IS NULL OR expires_at > NOW())'];
+    $publishedAt = $s['announcement_published_at'];
+    $expiresAt = $s['announcement_expires_at'];
+    $where = ["LOWER(status) = 'published'", "{$publishedAt} IS NOT NULL", "{$publishedAt} <= NOW()"];
+    if ($expiresAt !== null) $where[] = "({$expiresAt} IS NULL OR {$expiresAt} > NOW())";
     $params = [];
     if (($term = publicSearchTerm($filters)) !== '') {
         $where[] = "(title LIKE ? ESCAPE '!' OR {$s['body']} LIKE ? ESCAPE '!')";
@@ -129,7 +134,7 @@ function publicAnnouncements(PDO $db, array $filters = []): array
         $where[] = 'priority = ?';
         $params[] = $filters['priority'];
     }
-    $stmt = $db->prepare("SELECT id, title, {$s['body']} AS body, priority, published_at, expires_at, updated_at
+    $stmt = $db->prepare("SELECT id, title, {$s['body']} AS body, priority, {$publishedAt} AS published_at, " . ($expiresAt !== null ? $expiresAt : 'NULL') . " AS expires_at, updated_at
         FROM announcements WHERE " . implode(' AND ', $where) . " ORDER BY (priority = 'Urgent') DESC, published_at DESC, id DESC");
     $stmt->execute($params);
     $rows = $stmt->fetchAll();

@@ -7,13 +7,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	$stmt = $conn->query(
 		' SELECT d.*, r.resource_name, d.distribution_date AS distributed_at, u.full_name AS distributed_by_name
 		 FROM distributions d JOIN resources r ON r.id = d.resource_id
-		 JOIN users u ON u.id = d.distributed_by ORDER BY d.distributed_at DESC'
+		 JOIN users u ON u.id = d.distributed_by ORDER BY d.distribution_date DESC'
 	);
 	jsonResponse(['data' => $stmt->fetchAll()]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-	methodNotAllowed(['GET', 'POST']);
+	if (!in_array($_SERVER['REQUEST_METHOD'], ['PUT', 'DELETE'], true)) methodNotAllowed(['GET', 'POST', 'PUT', 'DELETE']);
+	requireApiLogin(['admin', 'official', 'volunteer']);
+	$data = requestData();
+	$id = positiveInt($data, 'id');
+	$conn->beginTransaction();
+	try {
+		$existing = $conn->prepare('SELECT resource_id, quantity FROM distributions WHERE id = ? FOR UPDATE');
+		$existing->execute([$id]);
+		$record = $existing->fetch();
+		if (!$record) throw new RuntimeException('Distribution not found.');
+		if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+			$conn->prepare('UPDATE resources SET quantity = quantity + ? WHERE id = ?')->execute([(int) $record['quantity'], (int) $record['resource_id']]);
+			$conn->prepare('DELETE FROM distributions WHERE id = ?')->execute([$id]);
+			logActivity($conn, 'delete', 'distribution', $id);
+		} else {
+			$quantity = positiveInt($data, 'quantity');
+			$recipientName = requiredString($data, 'recipient_name', 150);
+			$resourceId = positiveInt($data, 'resource_id');
+			$delta = $quantity - (int) $record['quantity'];
+			if ($resourceId !== (int) $record['resource_id']) {
+				$conn->prepare('UPDATE resources SET quantity = quantity + ? WHERE id = ?')->execute([(int) $record['quantity'], (int) $record['resource_id']]);
+				$stockUpdate = $conn->prepare('UPDATE resources SET quantity = quantity - ? WHERE id = ? AND quantity >= ?');
+				$stockUpdate->execute([$quantity, $resourceId, $quantity]);
+			} else {
+				$stockUpdate = $conn->prepare('UPDATE resources SET quantity = quantity - ? WHERE id = ? AND quantity >= ?');
+				$stockUpdate->execute([max(0, $delta), $resourceId, max(0, $delta)]);
+			}
+			if (!$stockUpdate->rowCount() && $delta > 0) throw new RuntimeException('Insufficient stock.');
+			$stmt = $conn->prepare('UPDATE distributions SET resource_id = ?, household_id = ?, recipient_name = ?, quantity = ?, distribution_date = ?, remarks = ? WHERE id = ?');
+			$stmt->execute([$resourceId, $data['household_id'] ?? null, $recipientName, $quantity, $data['distribution_date'] ?? date('Y-m-d H:i:s'), $data['remarks'] ?? null, $id]);
+			logActivity($conn, 'update', 'distribution', $id);
+		}
+		$conn->commit();
+		jsonResponse(['message' => $_SERVER['REQUEST_METHOD'] === 'DELETE' ? 'Distribution deleted and stock restored.' : 'Distribution updated.']);
+	} catch (Throwable $e) {
+		if ($conn->inTransaction()) $conn->rollBack();
+		jsonResponse(['error' => $e->getMessage()], 422);
+	}
 }
 
 requireApiLogin(['admin', 'official', 'volunteer']);

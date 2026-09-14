@@ -85,7 +85,7 @@ include '../../includes/header.php';
             </section>
 
             <div class="modal fade" id="addDistributionModal" tabindex="-1" aria-labelledby="addDistributionTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Distribution recorded in this preview.">
+                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form id="addDistributionForm">
                     <div class="modal-header"><h2 class="modal-title" id="addDistributionTitle">Record relief distribution</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="modal-intro">Confirm recipient details and available stock before releasing supplies.</p><div class="row g-3">
                         <div class="col-md-8"><label class="form-label" for="addDistributionResource">Resource</label><select class="form-select" id="addDistributionResource" name="resource" required><option value="" selected disabled>Select available resource</option><option>Family Food Pack — 284 packs</option><option>Drinking Water — 96 cases</option><option>Hygiene Kit — 143 kits</option><option>Sleeping Mat — 38 pieces</option><option>First Aid Kit — 64 kits</option></select></div>
@@ -111,7 +111,7 @@ include '../../includes/header.php';
             </div>
 
             <div class="modal fade" id="editDistributionModal" tabindex="-1" aria-labelledby="editDistributionTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Distribution changes saved in this preview.">
+                <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><form id="editDistributionForm">
                     <div class="modal-header"><h2 class="modal-title" id="editDistributionTitle">Edit distribution</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p class="modal-intro">Changes to quantity should be reconciled against inventory and the activity log.</p><div class="row g-3">
                         <div class="col-md-8"><label class="form-label" for="editDistributionResource">Resource</label><select class="form-select" id="editDistributionResource" name="resource"><option selected>Family Food Pack</option><option>Drinking Water</option><option>Hygiene Kit</option><option>Sleeping Mat</option></select></div>
@@ -129,7 +129,7 @@ include '../../includes/header.php';
             </div>
 
             <div class="modal fade" id="deleteDistributionModal" tabindex="-1" aria-labelledby="deleteDistributionTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form data-demo-form data-demo-message="Distribution reversed in this preview.">
+                <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form id="deleteDistributionForm">
                     <div class="modal-header"><h2 class="modal-title" id="deleteDistributionTitle">Reverse distribution?</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body"><p>Reverse <strong>DST-2026-0910-018</strong> and return its quantity to available stock?</p><label class="form-label" for="reverseReason">Reason for reversal</label><textarea class="form-control" id="reverseReason" name="reason" rows="3" placeholder="Required for the audit trail" required></textarea></div>
                     <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Keep record</button><button class="btn btn-danger" type="submit" data-confirm-action="Distribution reversed."><i class="bi bi-arrow-counterclockwise"></i> Reverse record</button></div>
@@ -138,5 +138,10 @@ include '../../includes/header.php';
         </main>
     </div>
 </div>
+
+<script>
+    window.sagipbroDistributionApi = { endpoint: <?= json_encode(appUrl('api/distribution.php')) ?>, resourcesEndpoint: <?= json_encode(appUrl('api/resources.php')) ?>, csrfToken: <?= json_encode(csrfToken()) ?> };
+</script>
+<script src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/js/distribution-api.js"></script>
 
 <?php include '../../includes/footer.php'; ?>

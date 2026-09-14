@@ -87,7 +87,7 @@ include '../../includes/header.php';
 
 <div class="modal fade" id="addVolunteerModal" tabindex="-1" aria-labelledby="addVolunteerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content">
-        <form action="index.php" method="post" data-demo-form data-toast-message="Volunteer added to the response roster.">
+                        <form id="addVolunteerForm">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="modal-header"><div><h2 class="modal-title" id="addVolunteerModalLabel">Add volunteer</h2><p class="mb-0 mt-1 small text-body-secondary">Record contact details, response skills, and availability.</p></div><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
             <div class="modal-body"><div class="row g-3">
@@ -117,12 +117,18 @@ include '../../includes/header.php';
 
 <div class="modal fade" id="editVolunteerModal" tabindex="-1" aria-labelledby="editVolunteerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-        <form action="index.php" method="post" data-demo-form data-toast-message="Volunteer profile updated.">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+                        <form id="editVolunteerForm">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="modal-header"><h2 class="modal-title" id="editVolunteerModalLabel">Edit volunteer</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                        <div class="modal-body"><p class="modal-intro">Update the selected volunteer's readiness details.</p><div class="mb-3"><label class="form-label" for="editVolunteerAssignment">Team assignment</label><select class="form-select" id="editVolunteerAssignment" name="assignment"><option selected>Medical team</option><option>Search and rescue</option><option>Relief warehouse</option><option>Transport unit</option></select></div><div class="mb-3"><label class="form-label" for="editVolunteerAvailability">Availability</label><select class="form-select" id="editVolunteerAvailability" name="availability"><option>24/7 response</option><option>Weekdays</option><option>Weekends</option><option selected>On call</option></select></div><div><label class="form-label" for="editVolunteerStatus">Status</label><select class="form-select" id="editVolunteerStatus" name="status"><option selected>Active</option><option>Deployed</option><option>Inactive</option></select></div></div>
             <div class="modal-header"><h2 class="modal-title" id="editVolunteerModalLabel">Edit volunteer</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
             <div class="modal-body"><p class="modal-intro">Update the selected volunteer's readiness details.</p><div class="mb-3"><label class="form-label" for="editVolunteerAssignment">Team assignment</label><select class="form-select" id="editVolunteerAssignment" name="assignment"><option selected>Medical team</option><option>Search and rescue</option><option>Relief warehouse</option><option>Transport unit</option></select></div><div class="mb-3"><label class="form-label" for="editVolunteerAvailability">Availability</label><select class="form-select" id="editVolunteerAvailability" name="availability"><option>24/7 response</option><option>Weekdays</option><option>Weekends</option><option selected>On call</option></select></div><div><label class="form-label" for="editVolunteerStatus">Status</label><select class="form-select" id="editVolunteerStatus" name="status"><option selected>Active</option><option>Deployed</option><option>Inactive</option></select></div></div>
             <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-brand" type="submit">Save changes</button></div>
         </form>
     </div></div>
 </div>
+<script>
+    window.sagipbroVolunteerApi = { endpoint: <?= json_encode(appUrl('api/volunteers.php')) ?>, csrfToken: <?= json_encode(csrfToken()) ?> };
+</script>
+<script src="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>assets/js/volunteers-api.js"></script>
 <?php include '../../includes/footer.php'; ?>
