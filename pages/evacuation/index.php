@@ -165,6 +165,7 @@ include '../../includes/header.php';
                         <div class="col-sm-6"><label class="form-label" for="editCenterOccupants">Current occupants</label><input class="form-control" id="editCenterOccupants" name="occupants" type="number" min="0" value="782" required></div>
                         <div class="col-md-7"><label class="form-label" for="editCenterContact">Contact person</label><input class="form-control" id="editCenterContact" name="contact_person" value="Elena M. Ramos" required></div>
                         <div class="col-md-5"><label class="form-label" for="editCenterPhone">Contact number</label><input class="form-control" id="editCenterPhone" name="contact_number" type="tel" value="0917 555 0138" required></div>
+                        <div class="col-12"><label class="form-label" for="editCenterNotes">Facilities and accessibility notes</label><textarea class="form-control" id="editCenterNotes" name="notes" rows="3" placeholder="Water access, accessible entrance, medical area, generator, or restrictions"></textarea></div>
                     </div></div>
                     <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-brand" type="submit"><i class="bi bi-check-lg"></i> Save changes</button></div>
                 </form></div></div>

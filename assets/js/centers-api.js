@@ -18,7 +18,7 @@
         view.dataset.recordJson = JSON.stringify(center); view.dataset.bsToggle = 'modal'; view.dataset.bsTarget = '#viewCenterModal';
         button.parentElement.prepend(view);
     }); };
-    const fillEdit = (id) => { const center=centers.find((item)=>Number(item.id)===id); if(!center)return; editForm.dataset.id=id; ['name','location','capacity','occupants','contact_person','contact_number','status'].forEach((field)=>{if(editForm.elements[field]) editForm.elements[field].value=field==='contact_person'?center.contact:field==='contact_number'?center.phone:center[field] ?? '';}); };
+    const fillEdit = (id) => { const center=centers.find((item)=>Number(item.id)===id); if(!center)return; editForm.dataset.id=id; ['name','location','capacity','occupants','contact_person','contact_number','notes','status'].forEach((field)=>{if(editForm.elements[field]) editForm.elements[field].value=field==='contact_person'?center.contact:field==='contact_number'?center.phone:center[field] ?? '';}); };
     const submit = async (form, method, body) => { try { await request(method, body); await load(); window.bootstrap?.Modal.getOrCreateInstance(form.closest('.modal')).hide(); form.reset(); window.sagipbroToast?.('Evacuation center saved to the database.','Action complete'); } catch(error) { window.sagipbroToast?.(error.message,'Request failed'); } };
     addForm.addEventListener('submit',(event)=>{event.preventDefault();if(!addForm.reportValidity())return;submit(addForm,'POST',Object.fromEntries(new FormData(addForm).entries()));});
     editForm.addEventListener('submit',(event)=>{event.preventDefault();if(!editForm.reportValidity())return;submit(editForm,'PUT',{...Object.fromEntries(new FormData(editForm).entries()),id:editForm.dataset.id});});

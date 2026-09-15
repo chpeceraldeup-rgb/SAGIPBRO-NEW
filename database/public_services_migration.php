@@ -45,4 +45,14 @@ function migratePublicServices(PDO $db): void
     if (!in_array('expires_at', $announcementColumns, true)) {
         $db->exec('ALTER TABLE announcements ADD COLUMN expires_at DATETIME NULL');
     }
+    $centerColumns = $tableColumns('evacuation_centers');
+    if (!in_array('contact_person', $centerColumns, true)) {
+        $db->exec('ALTER TABLE evacuation_centers ADD COLUMN contact_person VARCHAR(150) NULL');
+    }
+    if (!in_array('contact_number', $centerColumns, true)) {
+        $db->exec('ALTER TABLE evacuation_centers ADD COLUMN contact_number VARCHAR(30) NULL');
+    }
+    if (!in_array('notes', $centerColumns, true)) {
+        $db->exec('ALTER TABLE evacuation_centers ADD COLUMN notes TEXT NULL');
+    }
 }
